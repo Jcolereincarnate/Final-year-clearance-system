@@ -1,0 +1,44 @@
+<!-- clearance_certificate.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clearance Certificate</title>
+    <style>
+        body { font-family: Arial; padding: 40px; }
+        .certificate { border: 3px solid #1e40af; padding: 30px; max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #1e40af; margin: 10px 0; }
+        .content { line-height: 2; }
+        .signature { margin-top: 50px; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <h1>AJAYI CROWTHER UNIVERSITY</h1>
+            <h2>CLEARANCE CERTIFICATE</h2>
+        </div>
+        <div class="content">
+            <p>This is to certify that:</p>
+            <p><strong>Name:</strong> {{ student.full_name }}</p>
+            <p><strong>Matric Number:</strong> {{ student.matric_number }}</p>
+            <p>Has successfully completed all clearance requirements and has been <strong>FULLY CLEARED</strong> by all departments.</p>
+            <p><strong>Clearance Completed:</strong> {{ clearance.date_completed|date:"F d, Y" }}</p>
+            <p><strong>Generated:</strong> {{ generated_date|date:"F d, Y H:i" }}</p>
+        </div>
+        <div class="signature">
+            <div>
+                <p>_______________________</p>
+                <p>Student Affairs</p>
+            </div>
+            <div>
+                <p>_______________________</p>
+                <p>Registrar</p>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #1e40af; color: white; border: none; border-radius: 4px; cursor: pointer;">Print Certificate</button>
+    </div>
+</body>
+</html>

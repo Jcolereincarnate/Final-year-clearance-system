@@ -1,0 +1,223 @@
+{% extends 'clearance_app/base.html' %}
+{% load static %}
+{% block title %}Manage Officers - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin-pages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-page-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">
+                <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Manage Officers
+            </h1>
+            <p class="page-subtitle">Create and manage department officers</p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Add New Officer Card -->
+    <div class="content-card form-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                Add New Officer
+            </h3>
+        </div>
+        <div class="card-body">
+            <form method="post" class="officer-form">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_full_name" class="form-label">Full Name *</label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                        <span class="form-error">{{ form.full_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email" class="form-label">Email Address *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <span class="form-error">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_department" class="form-label">Department *</label>
+                        {{ form.department }}
+                        <span class="form-help-text">Which clearance department they manage</span>
+                        {% if form.department.errors %}
+                        <span class="form-error">{{ form.department.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_faculty_assignment" class="form-label">Faculty Assignment</label>
+                        {{ form.faculty_assignment }}
+                        <span class="form-help-text">For Faculty officers only - assign to specific faculty</span>
+                        {% if form.faculty_assignment.errors %}
+                        <span class="form-error">{{ form.faculty_assignment.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="id_password" class="form-label">Password *</label>
+                        {{ form.password }}
+                        <span class="form-help-text">Initial password for the officer account</span>
+                        {% if form.password.errors %}
+                        <span class="form-error">{{ form.password.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if form.non_field_errors %}
+                <div class="form-error-box">
+                    {{ form.non_field_errors.0 }}
+                </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        Create Officer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing Officers Card -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Existing Officers
+            </h3>
+            <div class="card-header-info">
+                <span class="info-badge">{{ officers.count }} Total</span>
+            </div>
+        </div>
+        <div class="card-body no-padding">
+            <div class="table-wrapper">
+                <table class="data-table officers-table">
+                    <thead>
+                        <tr>
+                            <th>Officer Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Faculty Assignment</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for officer in officers %}
+                            <tr>
+                                <td>
+                                    <div class="officer-cell">
+                                        <div class="officer-avatar">{{ officer.full_name|slice:":1" }}</div>
+                                        <strong>{{ officer.full_name }}</strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="mailto:{{ officer.email }}" class="email-link">
+                                        <svg class="email-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>
+                                        {{ officer.email }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="dept-badge">
+                                        <svg class="dept-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        </svg>
+                                        {{ officer.department.name }}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if officer.faculty_assignment %}
+                                        <span class="faculty-badge">
+                                            <svg class="faculty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                            </svg>
+                                            {{ officer.faculty_assignment.name }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">All Faculties</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ officer.date_joined|date:"M d, Y" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state-table">
+                                        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="9" cy="7" r="4"></circle>
+                                        </svg>
+                                        <p>No officers found</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Box -->
+    <div class="info-box">
+        <div class="info-box-header">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <strong>About Faculty Assignments</strong>
+        </div>
+        <ul class="info-list">
+            <li><strong>Faculty Department Officers:</strong> Can be assigned to specific faculties (e.g., Sciences Officer only sees Sciences students)</li>
+            <li><strong>Other Department Officers:</strong> See all students regardless of faculty (e.g., Library, Bursary, ICT)</li>
+            <li>Leave Faculty Assignment blank for officers who should handle all students</li>
+            <li>Each faculty should have at least one assigned Faculty department officer</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

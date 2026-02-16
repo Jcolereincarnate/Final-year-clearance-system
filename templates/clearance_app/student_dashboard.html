@@ -1,0 +1,237 @@
+{% extends 'clearance_app/base.html' %}
+{% load clearance_filters %}
+{% load static %}
+{% block title %}Student Dashboard - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">Student Dashboard</h1>
+            <p class="page-subtitle">Welcome, {{ user.full_name }} ({{ user.matric_number }})</p>
+        </div>
+    </div>
+
+    <!-- Clearance Status Overview Card -->
+    <div class="status-overview-card">
+        <div class="status-header">
+            <div class="status-info">
+                <h2 class="status-title">Clearance Status</h2>
+                <div class="status-badge-container">
+                    {% if clearance.status == 'approved' %}
+                        <span class="status-badge status-approved">
+                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Fully Cleared
+                        </span>
+                    {% elif clearance.status == 'rejected' %}
+                        <span class="status-badge status-rejected">
+                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            Rejected
+                        </span>
+                    {% elif clearance.status == 'pending' or clearance.status == 'in_progress' %}
+                        <span class="status-badge status-pending">
+                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            In Progress
+                        </span>
+                    {% else %}
+                        <span class="status-badge status-not-started">
+                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            Not Started
+                        </span>
+                    {% endif %}
+                </div>
+                {% if clearance.current_department %}
+                    <p class="current-dept">Current: {{ clearance.current_department.name }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="status-actions">
+                {% if clearance.status == 'not_started' or clearance.status == 'rejected' %}
+                    <a href="{% url 'start_clearance' %}" class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <polyline points="19 12 12 19 5 12"></polyline>
+                        </svg>
+                        {% if clearance.status == 'rejected' %}Resubmit Clearance{% else %}Start Clearance{% endif %}
+                    </a>
+                {% elif clearance.status == 'approved' %}
+                    <a href="{% url 'download_certificate' %}" class="btn btn-success">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download Certificate
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span class="progress-label">Overall Progress</span>
+                <span class="progress-percentage">{{ progress_percentage }}%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: {{ progress_percentage }}%;"></div>
+            </div>
+            <p class="progress-description">{{ progress_percentage }}% of departments have approved your clearance</p>
+        </div>
+    </div>
+
+    <!-- Department Progress Table -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">Departmental Approval Status</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Officer</th>
+                            <th>Date</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dept in departments %}
+                            <tr>
+                                <td>
+                                    <div class="dept-cell">
+                                        <span class="dept-number">{{ dept.order }}</span>
+                                        <span class="dept-name">{{ dept.name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% with approval=approval_status|dict_lookup:dept.id %}
+                                        {% if approval %}
+                                            {% if approval.status == 'approved' %}
+                                                <span class="table-badge badge-success">Approved</span>
+                                            {% elif approval.status == 'rejected' %}
+                                                <span class="table-badge badge-danger">Rejected</span>
+                                            {% else %}
+                                                <span class="table-badge badge-warning">Pending</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="table-badge badge-info">Not Started</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    {% with approval=approval_status|dict_lookup:dept.id %}
+                                        {% if approval and approval.officer %}
+                                            {{ approval.officer.full_name }}
+                                        {% else %}
+                                            <span class="text-muted">—</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    {% with approval=approval_status|dict_lookup:dept.id %}
+                                        {% if approval %}
+                                            {{ approval.timestamp|date:"M d, Y" }}
+                                        {% else %}
+                                            <span class="text-muted">—</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    {% with approval=approval_status|dict_lookup:dept.id %}
+                                        {% if approval and approval.comment %}
+                                            <span class="comment-text">{{ approval.comment }}</span>
+                                        {% else %}
+                                            <span class="text-muted">—</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Uploaded Documents -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                    <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                Uploaded Documents
+            </h3>
+        </div>
+        <div class="card-body">
+            {% if documents %}
+                <div class="documents-grid">
+                    {% for doc in documents %}
+                        <div class="document-card">
+                            <div class="document-icon-wrapper">
+                                {% if doc.get_file_extension == 'pdf' %}
+                                    <svg class="document-icon pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                {% else %}
+                                    <svg class="document-icon image" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                {% endif %}
+                            </div>
+                            <div class="document-info">
+                                <h4 class="document-type">{{ doc.get_document_type_display }}</h4>
+                                <p class="document-name">{{ doc.file_name }}</p>
+                                <p class="document-meta">{{ doc.file_size|filesizeformat }} • {{ doc.uploaded_at|date:"M d, Y" }}</p>
+                            </div>
+                            <a href="{{ doc.file.url }}" class="document-view-btn" target="_blank">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                View
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                    <h3>No documents uploaded yet</h3>
+                    <p>Upload your documents to start the clearance process</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

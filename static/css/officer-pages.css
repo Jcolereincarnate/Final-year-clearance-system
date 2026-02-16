@@ -1,0 +1,479 @@
+/* ==================== OFFICER PAGES STYLES ==================== */
+
+
+/* Officer Dashboard Container */
+
+.officer-dashboard-container,
+.review-clearance-container,
+.officer-history-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* Department Icon in Header */
+
+.dept-icon-header {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    color: var(--primary-blue);
+    vertical-align: middle;
+    margin-right: var(--spacing-sm);
+}
+
+.faculty-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 0.25rem 0.75rem;
+    background: var(--warning-light);
+    color: #92400e;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    margin-left: var(--spacing-md);
+}
+
+.faculty-icon-small {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+
+/* Clearance Queue */
+
+.clearance-queue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.clearance-queue-item {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    transition: all 0.3s ease;
+}
+
+.clearance-queue-item:hover {
+    border-color: var(--primary-blue);
+    box-shadow: var(--shadow-md);
+}
+
+.queue-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex: 1;
+}
+
+.student-avatar-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: var(--accent-gold);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.student-details {
+    flex: 1;
+}
+
+.student-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.student-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--gray-600);
+}
+
+.separator {
+    color: var(--gray-400);
+}
+
+.faculty-text {
+    color: var(--gray-600);
+}
+
+.queue-item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+}
+
+.submission-date {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.date-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    color: var(--gray-400);
+}
+
+
+/* Student Name in Tables */
+
+.student-name-small {
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.125rem;
+}
+
+.matric-code.small {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+}
+
+
+/* Decision Badges */
+
+.decision-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+}
+
+.decision-icon {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.5;
+}
+
+.decision-badge.approved {
+    background: var(--success-light);
+    color: #065f46;
+}
+
+.decision-badge.rejected {
+    background: var(--danger-light);
+    color: #991b1b;
+}
+
+.decision-badge.pending {
+    background: var(--warning-light);
+    color: #92400e;
+}
+
+
+/* ==================== REVIEW CLEARANCE PAGE ==================== */
+
+
+/* Student Info Grid */
+
+.student-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.email-link {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.email-link:hover {
+    text-decoration: underline;
+}
+
+
+/* Documents Review Grid */
+
+.documents-review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.document-review-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-xl);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s ease;
+}
+
+.document-review-card:hover {
+    border-color: var(--primary-blue);
+    box-shadow: var(--shadow-md);
+}
+
+.document-icon-large {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.document-icon-large svg {
+    width: 40px;
+    height: 40px;
+    stroke-width: 1.5;
+    color: var(--primary-blue);
+}
+
+.document-review-info {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    width: 100%;
+}
+
+.document-type {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.document-filename {
+    font-size: 0.875rem;
+    color: var(--gray-700);
+    margin: 0 0 var(--spacing-xs) 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.document-metadata {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+
+/* Current Department Highlight */
+
+.data-table tbody tr.current-dept {
+    background: var(--info-light);
+}
+
+.current-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    margin-left: var(--spacing-sm);
+}
+
+
+/* Decision Form */
+
+.decision-card {
+    border: 2px solid var(--primary-blue);
+}
+
+.decision-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.decision-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.decision-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.decision-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.option-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s ease;
+}
+
+.decision-option input[type="radio"]:checked+.option-content {
+    border-color: var(--primary-blue);
+    background: var(--info-light);
+}
+
+.approve-option input[type="radio"]:checked+.option-content {
+    border-color: var(--success);
+    background: var(--success-light);
+}
+
+.reject-option input[type="radio"]:checked+.option-content {
+    border-color: var(--danger);
+    background: var(--danger-light);
+}
+
+.option-content:hover {
+    border-color: var(--primary-blue);
+}
+
+.option-icon {
+    width: 40px;
+    height: 40px;
+    stroke-width: 2;
+    color: var(--gray-400);
+    flex-shrink: 0;
+}
+
+.decision-option input[type="radio"]:checked+.option-content .option-icon {
+    color: var(--primary-blue);
+}
+
+.approve-option input[type="radio"]:checked+.option-content .option-icon {
+    color: var(--success);
+}
+
+.reject-option input[type="radio"]:checked+.option-content .option-icon {
+    color: var(--danger);
+}
+
+.option-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: var(--spacing-xs);
+}
+
+.option-description {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.help-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    color: var(--gray-400);
+    vertical-align: middle;
+    margin-right: var(--spacing-xs);
+}
+
+.btn-large {
+    padding: 1rem var(--spacing-xl);
+    font-size: 1.05rem;
+}
+
+
+/* ==================== OFFICER HISTORY PAGE ==================== */
+
+.dept-badge-small {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.95rem;
+    color: var(--gray-700);
+}
+
+.dept-number-small {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: var(--radius-sm);
+}
+
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1024px) {
+    .queue-item-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .queue-item-actions {
+        align-items: stretch;
+    }
+    .queue-item-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .decision-options {
+        grid-template-columns: 1fr;
+    }
+    .documents-review-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .clearance-queue-item {
+        padding: var(--spacing-lg);
+    }
+    .student-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .student-meta {
+        flex-wrap: wrap;
+    }
+    .student-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .documents-review-grid {
+        grid-template-columns: 1fr;
+    }
+}

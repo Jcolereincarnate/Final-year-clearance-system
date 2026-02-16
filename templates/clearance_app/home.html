@@ -1,0 +1,93 @@
+{% extends 'clearance_app/base.html' %}
+{% load static %}
+{% block title %}Welcome - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="home-page">
+    <div class="home-hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Welcome to ACU
+            </div>
+            <h1 class="hero-title">Online Clearance System</h1>
+            <p class="hero-description">
+                A secure, efficient platform for managing student clearance processes digitally.
+                Track your clearance progress in real-time and eliminate paperwork.
+            </p>
+            
+            <div class="hero-actions">
+                <a href="{% url 'register' %}" class="hero-btn hero-btn-primary">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    Register as Student
+                </a>
+                <a href="{% url 'login' %}" class="hero-btn hero-btn-secondary">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon students">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">For Students</h3>
+                <p class="feature-description">Initiate clearance, upload documents, and track your progress online</p>
+                <a href="{% url 'register' %}" class="feature-link">Get Started →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon officers">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <polyline points="17 11 19 13 23 9"></polyline>
+                    </svg>
+                </div>
+                <h3 class="feature-title">For Officers</h3>
+                <p class="feature-description">Review and approve student clearances efficiently</p>
+                <a href="{% url 'login' %}" class="feature-link">Officer Login →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon admins">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </div>
+                <h3 class="feature-title">For Administrators</h3>
+                <p class="feature-description">Manage departments, officers, and monitor system performance</p>
+                <a href="{% url 'login' %}" class="feature-link">Admin Login →</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

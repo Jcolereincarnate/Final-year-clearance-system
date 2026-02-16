@@ -1,0 +1,213 @@
+{% extends 'clearance_app/base.html' %}
+{% load static %}
+{% block title %}Clearance Details - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin-pages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-page-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">
+                <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Clearance Details
+            </h1>
+            <p class="page-subtitle">Complete clearance information and approval history</p>
+        </div>
+        <a href="{% url 'view_all_clearances' %}" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to All Clearances
+        </a>
+    </div>
+
+    <!-- Student Information Card -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Student Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Full Name</div>
+                    <div class="info-value">{{ clearance.student.full_name }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Matric Number</div>
+                    <div class="info-value">
+                        <code class="matric-code large">{{ clearance.student.matric_number }}</code>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Email</div>
+                    <div class="info-value">{{ clearance.student.email }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Clearance Status</div>
+                    <div class="info-value">
+                        {% if clearance.status == 'approved' %}
+                            <span class="status-badge-large status-approved">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Fully Cleared
+                            </span>
+                        {% elif clearance.status == 'rejected' %}
+                            <span class="status-badge-large status-rejected">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                Rejected
+                            </span>
+                        {% elif clearance.status == 'pending' or clearance.status == 'in_progress' %}
+                            <span class="status-badge-large status-pending">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                In Progress
+                            </span>
+                        {% else %}
+                            <span class="status-badge-large status-not-started">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                Not Started
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Current Department</div>
+                    <div class="info-value">
+                        {% if clearance.current_department %}
+                            {{ clearance.current_department.name }}
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Date Created</div>
+                    <div class="info-value">{{ clearance.date_created|date:"F d, Y" }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Date Submitted</div>
+                    <div class="info-value">
+                        {% if clearance.date_submitted %}
+                            {{ clearance.date_submitted|date:"F d, Y H:i" }}
+                        {% else %}
+                            <span class="text-muted">Not submitted</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Date Completed</div>
+                    <div class="info-value">
+                        {% if clearance.date_completed %}
+                            {{ clearance.date_completed|date:"F d, Y H:i" }}
+                        {% else %}
+                            <span class="text-muted">Not completed</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department Approvals Card -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+                Department Approvals
+            </h3>
+        </div>
+        <div class="card-body no-padding">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Officer</th>
+                            <th>Comment</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for approval in approvals %}
+                            <tr>
+                                <td>
+                                    <div class="dept-cell">
+                                        <span class="dept-number">{{ approval.department.order }}</span>
+                                        <span class="dept-name">{{ approval.department.name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if approval.status == 'approved' %}
+                                        <span class="table-badge badge-success">Approved</span>
+                                    {% elif approval.status == 'rejected' %}
+                                        <span class="table-badge badge-danger">Rejected</span>
+                                    {% else %}
+                                        <span class="table-badge badge-warning">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if approval.officer %}
+                                        <div class="user-cell">
+                                            <div class="user-avatar small">{{ approval.officer.full_name|slice:":1" }}</div>
+                                            <span>{{ approval.officer.full_name }}</span>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if approval.comment %}
+                                        <span class="comment-text">{{ approval.comment }}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if approval.timestamp %}
+                                        {{ approval.timestamp|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

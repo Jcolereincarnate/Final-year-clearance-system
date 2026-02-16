@@ -1,0 +1,122 @@
+{% extends 'clearance_app/base.html' %}
+{% load static  %}
+{% block title %}Student Registration - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Logo Section -->
+            <div class="auth-logo">
+                <img src="{% static 'images/acu_logo.png' %}" class="logo-circle" alt="ACU">
+            </div>
+            
+            <!-- Header -->
+            <div class="auth-header">
+                <h1 class="auth-title">Student Registration</h1>
+                <p class="auth-subtitle">Create your clearance account</p>
+            </div>
+            
+            <!-- Registration Form -->
+            <form method="post" action="{% url 'register' %}" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_full_name" class="form-label">Full Name</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}
+                    <span class="form-error">{{ form.full_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_email" class="form-label">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <span class="form-error">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_faculty" class="form-label">Faculty</label>
+                    {{ form.faculty }}
+                    <span class="form-help-text">Select your academic faculty</span>
+                    {% if form.faculty.errors %}
+                    <span class="form-error">{{ form.faculty.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_matric_number" class="form-label">Matric Number</label>
+                    {{ form.matric_number }}
+                    <span class="form-help-text">e.g., 20H12345, ACU20201234</span>
+                    {% if form.matric_number.errors %}
+                    <span class="form-error">{{ form.matric_number.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_password1" class="form-label">Password</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <span class="form-error">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_password2" class="form-label">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <span class="form-error">{{ form.password2.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if form.non_field_errors %}
+                <div class="form-error-box">
+                    {{ form.non_field_errors.0 }}
+                </div>
+                {% endif %}
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    Create Account
+                </button>
+            </form>
+            
+            <!-- Footer Links -->
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'login' %}" class="auth-link">Login here</a></p>
+            </div>
+        </div>
+        
+        <!-- Info Panel -->
+        <div class="auth-info-panel">
+            <h2>Join ACU Clearance</h2>
+            <p>Register to start your clearance process</p>
+            <ul class="info-list">
+                <li>
+                    <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Quick and easy registration
+                </li>
+                <li>
+                    <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Secure document management
+                </li>
+                <li>
+                    <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Real-time clearance tracking
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+
+# SQLite database
+db.sqlite3
+
+# Static files collected for production
+staticfiles/
+
+# Media uploads
+media/
+
+# Mac system files
+.DS_Store
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+
+# Django migrations (optional, remove if deploying)
+# */migrations/*.py
+# !*/migrations/__init__.py

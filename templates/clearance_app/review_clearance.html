@@ -1,0 +1,299 @@
+{% extends 'clearance_app/base.html' %}
+
+{% block title %}Review Clearance - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/officer-pages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="review-clearance-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">
+                <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 11l3 3L22 4"></path>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                </svg>
+                Review Clearance
+            </h1>
+            <p class="page-subtitle">
+                {{ clearance.student.full_name }} 
+                <span class="separator">•</span> 
+                <code class="matric-code">{{ clearance.student.matric_number }}</code>
+                {% if student_faculty %}
+                    <span class="separator">•</span>
+                    <span class="faculty-text">{{ student_faculty.name }}</span>
+                {% endif %}
+            </p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Student Information Card -->
+    <div class="content-card student-info-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Student Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="student-info-grid">
+                <div class="info-item">
+                    <div class="info-label">Full Name</div>
+                    <div class="info-value">{{ clearance.student.full_name }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Matric Number</div>
+                    <div class="info-value">
+                        <code class="matric-code large">{{ clearance.student.matric_number }}</code>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Email Address</div>
+                    <div class="info-value">
+                        <a href="mailto:{{ clearance.student.email }}" class="email-link">{{ clearance.student.email }}</a>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Date Submitted</div>
+                    <div class="info-value">{{ clearance.date_submitted|date:"F d, Y H:i" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Uploaded Documents -->
+    <div class="content-card documents-review-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                    <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                Uploaded Documents
+            </h3>
+            <div class="card-header-info">
+                <span class="info-badge">{{ documents.count }} Document{{ documents.count|pluralize }}</span>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if documents %}
+                <div class="documents-review-grid">
+                    {% for doc in documents %}
+                        <div class="document-review-card">
+                            <div class="document-icon-large">
+                                {% if doc.get_file_extension == 'pdf' %}
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    </svg>
+                                {% else %}
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                {% endif %}
+                            </div>
+                            <div class="document-review-info">
+                                <h4 class="document-type">{{ doc.get_document_type_display }}</h4>
+                                <p class="document-filename">{{ doc.file_name }}</p>
+                                <p class="document-metadata">{{ doc.file_size|filesizeformat }}</p>
+                            </div>
+                            <a href="{{ doc.file.url }}" class="btn btn-secondary btn-full" target="_blank">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                View Document
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                    <h3>No documents uploaded</h3>
+                    <p>The student has not uploaded any documents</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Approval History -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Approval History
+            </h3>
+        </div>
+        <div class="card-body no-padding">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Officer</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in all_approvals %}
+                            <tr {% if app.department == department %}class="current-dept"{% endif %}>
+                                <td>
+                                    <div class="dept-cell">
+                                        <span class="dept-number">{{ app.department.order }}</span>
+                                        <span class="dept-name">{{ app.department.name }}</span>
+                                        {% if app.department == department %}
+                                            <span class="current-badge">You</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if app.status == 'approved' %}
+                                        <span class="table-badge badge-success">Approved</span>
+                                    {% elif app.status == 'rejected' %}
+                                        <span class="table-badge badge-danger">Rejected</span>
+                                    {% else %}
+                                        <span class="table-badge badge-warning">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if app.officer %}
+                                        {{ app.officer.full_name }}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if app.comment %}
+                                        <span class="comment-text">{{ app.comment }}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decision Form -->
+    <div class="content-card decision-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 11l3 3L22 4"></path>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                </svg>
+                Make Your Decision
+            </h3>
+        </div>
+        <div class="card-body">
+            <form method="post" class="decision-form">
+                {% csrf_token %}
+                
+                <div class="decision-options">
+                    <label class="decision-option approve-option">
+                        <input type="radio" name="status" value="approved" {% if form.status.value == 'approved' %}checked{% endif %}>
+                        <div class="option-content">
+                            <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <div>
+                                <div class="option-title">Approve Clearance</div>
+                                <div class="option-description">Student has met all requirements</div>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="decision-option reject-option">
+                        <input type="radio" name="status" value="rejected" {% if form.status.value == 'rejected' %}checked{% endif %}>
+                        <div class="option-content">
+                            <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            <div>
+                                <div class="option-title">Reject Clearance</div>
+                                <div class="option-description">Requirements not met or issues found</div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                {% if form.status.errors %}
+                <span class="form-error">{{ form.status.errors.0 }}</span>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="id_comment" class="form-label">Comment / Reason</label>
+                    {{ form.comment }}
+                    <span class="form-help-text">
+                        <svg class="help-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Required if rejecting. Provide clear feedback for the student.
+                    </span>
+                    {% if form.comment.errors %}
+                    <span class="form-error">{{ form.comment.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {% if form.non_field_errors %}
+                <div class="form-error-box">
+                    {{ form.non_field_errors.0 }}
+                </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success btn-large">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Submit Decision
+                    </button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-large">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

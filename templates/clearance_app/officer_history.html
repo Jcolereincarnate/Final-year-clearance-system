@@ -1,0 +1,138 @@
+{% extends 'clearance_app/base.html' %}
+
+{% block title %}My Approval History - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/officer-pages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="officer-history-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">
+                <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                My Approval History
+            </h1>
+            <p class="page-subtitle">Complete record of all your clearance decisions</p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Approval History Table -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                All Decisions
+            </h3>
+            <div class="card-header-info">
+                <span class="info-badge">{{ approvals.count }} Total Records</span>
+            </div>
+        </div>
+        <div class="card-body no-padding">
+            <div class="table-wrapper">
+                <table class="data-table history-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Department</th>
+                            <th>Decision</th>
+                            <th>Date & Time</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for approval in approvals %}
+                            <tr>
+                                <td>
+                                    <div class="student-cell">
+                                        <div class="student-avatar">{{ approval.clearance.student.full_name|slice:":1" }}</div>
+                                        <div>
+                                            <div class="student-name-small">{{ approval.clearance.student.full_name }}</div>
+                                            <code class="matric-code small">{{ approval.clearance.student.matric_number }}</code>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dept-badge-small">
+                                        <span class="dept-number-small">{{ approval.department.order }}</span>
+                                        {{ approval.department.name }}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if approval.status == 'approved' %}
+                                        <span class="decision-badge approved">
+                                            <svg class="decision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            Approved
+                                        </span>
+                                    {% elif approval.status == 'rejected' %}
+                                        <span class="decision-badge rejected">
+                                            <svg class="decision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                            Rejected
+                                        </span>
+                                    {% else %}
+                                        <span class="decision-badge pending">
+                                            <svg class="decision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            {{ approval.status|title }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="timestamp-cell">
+                                        <svg class="time-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <span>{{ approval.updated_at|date:"M d, Y H:i" }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if approval.comment %}
+                                        <span class="comment-text">{{ approval.comment }}</span>
+                                    {% else %}
+                                        <span class="text-muted">No comment provided</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state-table">
+                                        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <p>No approval history found</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

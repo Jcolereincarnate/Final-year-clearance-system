@@ -1,0 +1,320 @@
+{% extends 'clearance_app/base.html' %}
+{% load static %}
+{% block title %}Admin Dashboard - ACU Clearance System{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">Administrator Dashboard</h1>
+            <p class="page-subtitle">System Overview and Management</p>
+        </div>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+        <div class="stat-card stat-primary">
+            <div class="stat-icon-wrapper">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Total Students</div>
+                <div class="stat-value">{{ total_students }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-success">
+            <div class="stat-icon-wrapper success">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Fully Cleared</div>
+                <div class="stat-value">{{ total_approved }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-warning">
+            <div class="stat-icon-wrapper warning">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Pending/In Progress</div>
+                <div class="stat-value">{{ total_pending }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-danger">
+            <div class="stat-icon-wrapper danger">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Rejected</div>
+                <div class="stat-value">{{ total_rejected }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department Performance -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                Department Performance
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Pending</th>
+                            <th>Approved</th>
+                            <th>Rejected</th>
+                            <th>Total Processed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dept in departments %}
+                            <tr>
+                                <td>
+                                    <div class="dept-cell">
+                                        <span class="dept-number">{{ dept.order }}</span>
+                                        <span class="dept-name">{{ dept.name }}</span>
+                                    </div>
+                                </td>
+                                <td><span class="metric-badge badge-warning">{{ dept.pending_count }}</span></td>
+                                <td><span class="metric-badge badge-success">{{ dept.approved_count }}</span></td>
+                                <td><span class="metric-badge badge-danger">{{ dept.rejected_count }}</span></td>
+                                <td><strong>{{ dept.approved_count|add:dept.rejected_count }}</strong></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Clearances -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                Recent Clearances
+            </h3>
+            <a href="{% url 'view_all_clearances' %}" class="card-header-action">
+                View All
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Matric Number</th>
+                            <th>Status</th>
+                            <th>Current Dept</th>
+                            <th>Date Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for clearance in recent_clearances %}
+                            <tr>
+                                <td>
+                                    <div class="student-cell">
+                                        <div class="student-avatar">{{ clearance.student.full_name|slice:":1" }}</div>
+                                        <span>{{ clearance.student.full_name }}</span>
+                                    </div>
+                                </td>
+                                <td><code class="matric-code">{{ clearance.student.matric_number }}</code></td>
+                                <td>
+                                    {% if clearance.status == 'approved' %}
+                                        <span class="status-badge status-approved">
+                                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            Approved
+                                        </span>
+                                    {% elif clearance.status == 'rejected' %}
+                                        <span class="status-badge status-rejected">
+                                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                            Rejected
+                                        </span>
+                                    {% elif clearance.status == 'pending' or clearance.status == 'in_progress' %}
+                                        <span class="status-badge status-pending">
+                                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            In Progress
+                                        </span>
+                                    {% else %}
+                                        <span class="status-badge status-not-started">
+                                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                            </svg>
+                                            Not Started
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if clearance.current_department %}
+                                        {{ clearance.current_department.name }}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ clearance.date_created|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'view_clearance_detail' clearance.id %}" class="action-link">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent System Activity -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Recent System Activity
+            </h3>
+            <a href="{% url 'audit_logs' %}" class="card-header-action">
+                View All Logs
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="activity-list">
+                {% for log in recent_logs %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <strong>{{ log.user.full_name|default:"System" }}</strong>
+                                <span class="activity-action">{{ log.get_action_display }}</span>
+                            </div>
+                            <p class="activity-description">{{ log.description }}</p>
+                            <span class="activity-time">{{ log.timestamp|date:"M d, Y H:i" }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="content-card quick-actions-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                Quick Actions
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="quick-actions-grid">
+                <a href="{% url 'manage_departments' %}" class="quick-action-btn">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span>Manage Departments</span>
+                </a>
+
+                <a href="{% url 'manage_officers' %}" class="quick-action-btn">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Manage Officers</span>
+                </a>
+
+                <a href="{% url 'view_all_clearances' %}" class="quick-action-btn">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span>View All Clearances</span>
+                </a>
+
+                <a href="{% url 'audit_logs' %}" class="quick-action-btn secondary">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    <span>Audit Logs</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

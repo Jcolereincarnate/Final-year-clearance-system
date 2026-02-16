@@ -1,0 +1,443 @@
+/* ==================== CLEARANCE UPLOAD PAGE ==================== */
+
+.clearance-upload-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* Page Header */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-2xl);
+    gap: var(--spacing-lg);
+}
+
+.rejected-title,
+.start-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.rejected-title {
+    color: var(--danger);
+}
+
+.start-title {
+    color: var(--primary-blue);
+}
+
+.title-icon {
+    width: 32px;
+    height: 32px;
+    stroke-width: 2;
+}
+
+
+/* Alert Banner */
+
+.alert-banner {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-2xl);
+    border-left: 4px solid;
+}
+
+.alert-warning {
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+}
+
+.alert-icon-wrapper {
+    flex-shrink: 0;
+}
+
+.alert-icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    color: var(--warning);
+}
+
+.alert-content strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: var(--spacing-sm);
+}
+
+.alert-content p {
+    font-size: 0.95rem;
+    color: #92400e;
+    margin: 0;
+}
+
+
+/* Instructions Card */
+
+.instructions-card .card-body {
+    padding: 0;
+}
+
+.instructions-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.instruction-section {
+    padding: var(--spacing-xl);
+}
+
+.instruction-section:first-child {
+    border-right: 1px solid var(--gray-200);
+}
+
+.instruction-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.instruction-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.instruction-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gray-700);
+}
+
+.list-icon {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    flex-shrink: 0;
+    color: var(--success);
+    margin-top: 2px;
+}
+
+.list-icon.warning {
+    color: var(--warning);
+}
+
+
+/* Upload Form */
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-xl);
+}
+
+.file-upload-wrapper {
+    position: relative;
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2xl);
+    background: var(--gray-50);
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.file-upload-wrapper:hover .file-upload-placeholder {
+    border-color: var(--primary-blue);
+    background: var(--info-light);
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    stroke-width: 1.5;
+    color: var(--gray-400);
+    margin-bottom: var(--spacing-md);
+}
+
+.upload-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.upload-hint {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-large {
+    padding: 1rem var(--spacing-xl);
+    font-size: 1.05rem;
+}
+
+
+/* Documents List */
+
+.success-message {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: var(--success-light);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.success-icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+.success-message p {
+    font-size: 0.95rem;
+    color: #065f46;
+    margin: 0;
+}
+
+.documents-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s ease;
+}
+
+.document-item:hover {
+    border-color: var(--primary-blue);
+    box-shadow: var(--shadow-md);
+}
+
+.document-icon-large {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.document-icon-large svg {
+    width: 32px;
+    height: 32px;
+    stroke-width: 1.5;
+    color: var(--primary-blue);
+}
+
+.document-details {
+    flex: 1;
+}
+
+.document-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.document-filename {
+    font-size: 0.95rem;
+    color: var(--gray-700);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.document-metadata {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.separator {
+    color: var(--gray-400);
+}
+
+.document-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.action-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+.view-btn:hover {
+    background: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+    color: var(--white);
+}
+
+.delete-btn:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: var(--white);
+}
+
+
+/* Submit Section */
+
+.submit-section {
+    padding: var(--spacing-2xl);
+    background: var(--success-light);
+    border: 2px solid var(--success);
+    border-radius: var(--radius-lg);
+}
+
+.submit-header {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.submit-icon {
+    width: 32px;
+    height: 32px;
+    stroke-width: 2;
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+.submit-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #065f46;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.submit-description {
+    font-size: 0.95rem;
+    color: #047857;
+    margin: 0;
+}
+
+
+/* Document Count Badge */
+
+.document-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 var(--spacing-sm);
+    background: var(--gray-200);
+    color: var(--gray-600);
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    margin-left: var(--spacing-sm);
+}
+
+.document-count.has-documents {
+    background: var(--success);
+    color: var(--white);
+}
+
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+    .instructions-content {
+        grid-template-columns: 1fr;
+    }
+    .instruction-section:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+    }
+    .document-item {
+        flex-wrap: wrap;
+    }
+    .document-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    .action-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}

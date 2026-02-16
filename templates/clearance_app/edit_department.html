@@ -1,0 +1,129 @@
+{% extends 'clearance_app/base.html' %}
+{% load static %}
+{% block title %}Edit Department - ACU Clearance System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin-pages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-page-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">
+                <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit Department
+            </h1>
+            <p class="page-subtitle">Modify department: <strong>{{ department.name }}</strong></p>
+        </div>
+        <a href="{% url 'manage_departments' %}" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Departments
+        </a>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="content-card form-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Department Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <form method="post" class="edit-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_name" class="form-label">Department Name *</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <span class="form-error">{{ form.name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_order" class="form-label">Workflow Order *</label>
+                    {{ form.order }}
+                    <span class="form-help-text">Position in the clearance workflow sequence</span>
+                    {% if form.order.errors %}
+                    <span class="form-error">{{ form.order.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_description" class="form-label">Description</label>
+                    {{ form.description }}
+                    <span class="form-help-text">Brief description of what this department verifies</span>
+                    {% if form.description.errors %}
+                    <span class="form-error">{{ form.description.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        {{ form.is_active }}
+                        <span class="checkbox-text">Active Department</span>
+                    </label>
+                    <span class="form-help-text">Inactive departments are skipped in the clearance workflow</span>
+                    {% if form.is_active.errors %}
+                    <span class="form-error">{{ form.is_active.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {% if form.non_field_errors %}
+                <div class="form-error-box">
+                    {{ form.non_field_errors.0 }}
+                </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Save Changes
+                    </button>
+                    <a href="{% url 'manage_departments' %}" class="btn btn-secondary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Department Info Box -->
+    <div class="info-box">
+        <div class="info-box-header">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <strong>Important Notes</strong>
+        </div>
+        <ul class="info-list">
+            <li>Changing the order will affect the clearance workflow sequence</li>
+            <li>Deactivating a department will skip it in all pending clearances</li>
+            <li>Department names must be unique across the system</li>
+            <li>Order numbers must be unique and sequential</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

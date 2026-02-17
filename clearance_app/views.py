@@ -1,32 +1,22 @@
-"""
-Views for Ajayi Crowther University Online Clearance System
-Part 1: Authentication and Student Views
-"""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q, Count
-from django.http import HttpResponse, FileResponse, Http404
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db import transaction
 from .models import *
 from .forms import *
-from .utils import create_audit_log, get_client_ip
-from django.core.mail import send_mail #Remember to add email notifications
-from django.conf import settings
+from .utils import *
 
 def home(request):
-    """Landing page"""
     if request.user.is_authenticated:
         return redirect('dashboard')
     return render(request, 'clearance_app/home.html')
 
-
 def register_student(request):
-    """Student registration view"""
     if request.user.is_authenticated:
         return redirect('dashboard')
     
@@ -42,6 +32,25 @@ def register_student(request):
                 ip_address=get_client_ip(request)
             )
             messages.success(request, 'Registration successful! Welcome to ACU Clearance System.')
+            try:
+                subject = "Welcome to Ajayi Crowther University Final Year Clearance Portal"
+                message = (
+                            f"Dear {request.user.full_name},\n\n"
+                            "Welcome to the Ajayi Crowther University Final Year Clearance Portal. "
+                            "This platform has been carefully designed to simplify and streamline "
+                            "your clearance process.\n\n"
+                            "You can now complete your departmental clearance, upload required documents, "
+                            "and track your approval status in real time.\n\n"
+                            "We wish you a smooth and successful clearance process.\n\n"
+                            "Best regards,\n"
+                            "Office of the Registrar,\n"
+                            "Ajayi Crowther University "
+                        )
+
+                email= user.email
+                send_email_notification(subject, message, email)
+            except Exception as e:
+                print (f"Error Occurred: {e}")
             return redirect('dashboard')
         else:
             messages.error(request, 'Please correct the errors below.')
@@ -50,9 +59,7 @@ def register_student(request):
     
     return render(request, 'clearance_app/register.html', {'form': form})
 
-
 def login_view(request):
-    """User login view"""
     if request.user.is_authenticated:
         return redirect('dashboard')
     
@@ -80,10 +87,8 @@ def login_view(request):
     
     return render(request, 'clearance_app/login.html', {'form': form})
 
-
 @login_required
 def logout_view(request):
-    """User logout view"""
     create_audit_log(
         user=request.user,
         action='logout',
@@ -94,12 +99,8 @@ def logout_view(request):
     messages.success(request, 'You have been logged out successfully.')
     return redirect('login')
 
-
-# ==================== DASHBOARD ROUTING ====================
-
 @login_required
 def dashboard(request):
-    """Route to appropriate dashboard based on user role"""
     if request.user.is_student():
         return student_dashboard(request)
     elif request.user.is_officer():
@@ -110,12 +111,8 @@ def dashboard(request):
         messages.error(request, 'Invalid user role.')
         return redirect('login')
 
-
-# ==================== STUDENT VIEWS ====================
-
 @login_required
 def student_dashboard(request):
-    """Student dashboard with clearance status"""
     if not request.user.is_student():
         messages.error(request, 'Access denied. Students only.')
         return redirect('dashboard')
@@ -148,11 +145,9 @@ def student_dashboard(request):
     
     return render(request, 'clearance_app/student_dashboard.html', context)
 
-
 @login_required
 @require_http_methods(["GET", "POST"])
 def start_clearance(request):
-    """Start clearance process"""
     if not request.user.is_student():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -168,33 +163,139 @@ def start_clearance(request):
         if 'submit_clearance' in request.POST:
             # This is the final submission - no form validation needed
             if clearance.documents.count() > 0:
-                # Initialize clearance
-                first_department = Department.objects.filter(is_active=True).order_by('order').first()
+                
+                active_departments = Department.objects.filter(is_active=True).order_by('order')
+                first_department = active_departments.first()
                 
                 if first_department:
-                    clearance.status = 'pending'
-                    clearance.current_department = first_department
-                    clearance.date_submitted = timezone.now()
-                    clearance.save()
-                    
-                    # Create approval records for all departments
-                    for dept in Department.objects.filter(is_active=True):
-                        ClearanceApproval.objects.get_or_create(
-                            clearance=clearance,
-                            department=dept,
-                            defaults={'status': 'pending'}
-                        )
-                    
-                    create_audit_log(
-                        user=request.user,
-                        action='clearance_submit',
-                        description=f'Clearance submitted by {request.user.full_name}',
-                        ip_address=get_client_ip(request),
-                        clearance=clearance
-                    )
-                    
-                    messages.success(request, 'Clearance request submitted successfully!')
-                    return redirect('dashboard')
+                    with transaction.atomic():
+                        if clearance.status == 'rejected':
+                            
+                            # Find the department that rejected
+                            rejected_approval = ClearanceApproval.objects.filter(
+                                clearance=clearance,
+                                status='rejected'
+                            ).select_related('department').order_by('department__order').first()
+                            
+                            if rejected_approval:
+                                rejecting_dept = rejected_approval.department
+
+                                ClearanceApproval.objects.filter(
+                                    id=rejected_approval.id
+                                ).update(
+                                    status='pending',
+                                    officer=None,
+                                    comment=''
+                                )
+                                
+
+                                clearance.status = 'in_progress'
+                                clearance.current_department = rejecting_dept
+                                clearance.date_submitted = timezone.now()
+                                clearance.save()
+                                
+                                create_audit_log(
+                                    user=request.user,
+                                    action='clearance_submit',
+                                    description=f'Clearance resubmitted by {request.user.full_name}. Routed back to {rejecting_dept.name}.',
+                                    ip_address=get_client_ip(request),
+                                    clearance=clearance
+                                )
+                                
+                                messages.success(
+                                    request,
+                                    f'Clearance resubmitted successfully! Your clearance has been sent back to '
+                                    f'{rejecting_dept.name} for review.'
+                                )
+                                try:
+                                    subject = "Resubmission Received – Clearance Under Review"
+                                    message = (
+                                        f"Dear {request.user.full_name},\n\n"
+                                        "This is to confirm that your updated clearance documents have been successfully "
+                                        "received on the Ajayi Crowther University Final Year Clearance Portal.\n\n"
+                                        f"Your resubmission is currently under review by {rejecting_dept.name}. "
+                                        "You will be notified once a decision has been made.\n\n"
+                                        "Thank you for your prompt action and cooperation.\n\n"
+                                        "Best regards,\n"
+                                        "Office of the Registrar,\n"
+                                        "Ajayi Crowther University"
+                                    )
+
+                                    email= request.user.email
+                                    send_email_notification(subject, message, email)
+                                except Exception as e:
+                                    print (f"Error Occurred: {e}")
+                                return redirect('dashboard')
+                            
+                            else:
+                                ClearanceApproval.objects.filter(clearance=clearance).delete()
+                                
+                                clearance.status = 'in_progress'
+                                clearance.current_department = first_department
+                                clearance.date_submitted = timezone.now()
+                                clearance.save()
+                                
+                                for dept in active_departments:
+                                    ClearanceApproval.objects.create(
+                                        clearance=clearance,
+                                        department=dept,
+                                        status='pending'
+                                    )
+                                
+                                create_audit_log(
+                                    user=request.user,
+                                    action='clearance_submit',
+                                    description=f'Clearance resubmitted by {request.user.full_name} (restarted from beginning).',
+                                    ip_address=get_client_ip(request),
+                                    clearance=clearance
+                                )
+                                try:
+                                    subject = "Clearance Submission Received – Under Review"
+
+                                    message = (
+                                        f"Dear {request.user.full_name},\n\n"
+                                        "This is to confirm that your final year clearance submission has been "
+                                        "successfully received on the Ajayi Crowther University Clearance Portal.\n\n"
+                                        "Your application is currently under review by the respective departments. "
+                                        "You will receive a notification once the review process has been completed "
+                                        "or if any further action is required from you.\n\n"
+                                        "Kindly ensure you monitor your email and dashboard regularly for updates.\n\n"
+                                        "Best regards,\n"
+                                        "Office of the Registrar,\n"
+                                        "Ajayi Crowther University"
+                                    )
+                                    email= request.user.email
+                                    send_email_notification(subject, message, email)
+                                except Exception as e:
+                                    print (f"Error Occurred: {e}")
+                                
+                                messages.success(request, 'Clearance resubmitted successfully!')
+                                return redirect('dashboard')
+                        else:
+                            clearance.status = 'pending'
+                            clearance.current_department = first_department
+                            clearance.date_submitted = timezone.now()
+                            clearance.save()
+                            
+                            # Create approval records for all departments
+                            for dept in active_departments:
+                                ClearanceApproval.objects.get_or_create(
+                                    clearance=clearance,
+                                    department=dept,
+                                    defaults={'status': 'pending'}
+                                )
+                            
+                            create_audit_log(
+                                user=request.user,
+                                action='clearance_submit',
+                                description=f'Clearance submitted by {request.user.full_name}',
+                                ip_address=get_client_ip(request),
+                                clearance=clearance
+                            )
+                            
+                            messages.success(request, 'Clearance request submitted successfully!')
+                            return redirect('dashboard')
+                
                 else:
                     messages.error(request, 'No active departments found. Contact administrator.')
             else:
@@ -232,10 +333,8 @@ def start_clearance(request):
     
     return render(request, 'clearance_app/start_clearance.html', context)
 
-
 @login_required
 def delete_document(request, document_id):
-    """Delete uploaded document"""
     if not request.user.is_student():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -252,10 +351,8 @@ def delete_document(request, document_id):
     
     return redirect(request.META.get('HTTP_REFERER', 'dashboard'))
 
-
 @login_required
 def download_clearance_certificate(request):
-    """Download clearance confirmation certificate"""
     if not request.user.is_student():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -274,28 +371,9 @@ def download_clearance_certificate(request):
     }
     
     return render(request, 'clearance_app/clearance_certificate.html', context)
-"""
-Views Part 2: Officer and Administrator Views
-"""
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.db.models import Q, Count
-from django.utils import timezone
-from django.db import transaction
-
-from .models import (User, Department, Clearance, ClearanceApproval, 
-                     Document, AuditLog)
-from .forms import (ClearanceApprovalForm, DepartmentForm, OfficerCreationForm,
-                   ClearanceSearchForm)
-from .utils import create_audit_log, get_client_ip
-
-
-# ==================== OFFICER VIEWS ====================
 
 @login_required
 def officer_dashboard(request):
-    """Department officer dashboard"""
     if not request.user.is_officer():
         messages.error(request, 'Access denied. Officers only.')
         return redirect('dashboard')
@@ -305,8 +383,6 @@ def officer_dashboard(request):
         return redirect('login')
     
     department = request.user.department
-    
-    # Get pending clearances for this department
     pending_approvals = ClearanceApproval.objects.filter(
         department=department,
         status='pending',
@@ -349,10 +425,8 @@ def officer_dashboard(request):
     
     return render(request, 'clearance_app/officer_dashboard.html', context)
 
-
 @login_required
 def review_clearance(request, clearance_id):
-    """Officer review and approve/reject clearance"""
     if not request.user.is_officer():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -363,24 +437,28 @@ def review_clearance(request, clearance_id):
     # Check if officer can review this clearance
     if not request.user.can_review_clearance(clearance):
         messages.error(request, f'You can only review clearances for {request.user.faculty_assignment.name} faculty.')
-        return redirect('dashboard')
+        return redirect('officer_dashboard')
     
-    # Get or create approval record
+    # Check if this clearance is currently at this officer's department
+    if clearance.current_department != department:
+        messages.warning(request, 'This clearance is not at your department yet.')
+        return redirect('officer_dashboard')
+
+    # Check clearance is in a reviewable state
+    if clearance.status not in ['pending', 'in_progress']:
+        messages.info(request, 'This clearance is not currently active.')
+        return redirect('dashboard')
+
+    # Get or create approval record for this department
     approval, created = ClearanceApproval.objects.get_or_create(
         clearance=clearance,
         department=department,
         defaults={'status': 'pending'}
     )
-    
-    # Check if this department can review now
-    if clearance.current_department != department:
-        messages.warning(request, 'This clearance is not at your department yet.')
-        return redirect('dashboard')
-    
-    # Check if already processed
+
     if approval.status != 'pending':
         messages.info(request, 'This clearance has already been processed by your department.')
-        return redirect('dashboard')
+        return redirect('officer_dashboard')
     
     if request.method == 'POST':
         form = ClearanceApprovalForm(request.POST, instance=approval)
@@ -401,6 +479,26 @@ def review_clearance(request, clearance_id):
                     ip_address=get_client_ip(request),
                     clearance=clearance
                 )
+                try:
+                    subject = "Department Clearance Approved – Proceeding to Next Stage"
+                    message = (
+                        f"Dear {clearance.student.full_name},\n\n"
+                        "We are pleased to inform you that your clearance has been successfully "
+                        f"approved by {approval.officer} .\n\n"
+                        f"Your application has now been forwarded to the {clearance.current_department} for review "
+                        "as part of the final year clearance process.\n\n"
+                        "Kindly continue to monitor your clearance portal for further updates "
+                        "regarding your progress.\n\n"
+                        "Best regards,\n"
+                        "Office of the Registrar,\n"
+                        "Ajayi Crowther University"
+                    )
+
+                    email= clearance.student.email
+                    send_email_notification(subject, message, email)
+                except Exception as e:
+                    print (f"Error Occurred: {e}")
+                                
                 
                 messages.success(request, f'Clearance approved for {clearance.student.full_name}.')
                 
@@ -415,7 +513,27 @@ def review_clearance(request, clearance_id):
                     ip_address=get_client_ip(request),
                     clearance=clearance
                 )
-                
+                try:
+                    subject = "Clearance Update: Submission Not Approved"
+                    message = (
+                        f"Dear {clearance.student.full_name},\n\n"
+                        "We regret to inform you that your recent clearance submission has not been "
+                        f"approved by the {clearance.current_department}.\n\n"
+                        "Kindly log in to the Final Year Clearance Portal to review the feedback "
+                        "provided and take the necessary corrective action.\n\n"
+                        "You may update and resubmit your documents once the required adjustments "
+                        "have been made.\n\n"
+                        "We encourage you to address the feedback promptly to avoid delays in your "
+                        "clearance process.\n\n"
+                        "Best regards,\n"
+                        "Office of the Registrar,\n"
+                        "Ajayi Crowther University"
+                    )
+                    email= clearance.student.email
+                    send_email_notification(subject, message, email)
+                except Exception as e:
+                    print (f"Error Occurred: {e}")
+                                
                 messages.warning(request, f'Clearance rejected for {clearance.student.full_name}.')
             
             return redirect('dashboard')
@@ -436,15 +554,13 @@ def review_clearance(request, clearance_id):
         'approval': approval,
         'documents': documents,
         'all_approvals': all_approvals,
-        'student_faculty': clearance.student.faculty,  # Show student's faculty
+        'student_faculty': clearance.student.faculty,  
     }
     
     return render(request, 'clearance_app/review_clearance.html', context)
 
-
 @login_required
 def officer_history(request):
-    """View officer's approval history"""
     if not request.user.is_officer():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -459,12 +575,9 @@ def officer_history(request):
     
     return render(request, 'clearance_app/officer_history.html', context)
 
-
-# ==================== ADMIN VIEWS ====================
-
 @login_required
 def admin_dashboard(request):
-    """Administrator dashboard with analytics"""
+
     if not request.user.is_admin():
         messages.error(request, 'Access denied. Administrators only.')
         return redirect('dashboard')
@@ -502,10 +615,8 @@ def admin_dashboard(request):
     
     return render(request, 'clearance_app/admin_dashboard.html', context)
 
-
 @login_required
 def manage_departments(request):
-    """Manage departments"""
     if not request.user.is_admin():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -534,10 +645,8 @@ def manage_departments(request):
     
     return render(request, 'clearance_app/manage_departments.html', context)
 
-
 @login_required
 def edit_department(request, department_id):
-    """Edit department"""
     if not request.user.is_admin():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -561,10 +670,8 @@ def edit_department(request, department_id):
     
     return render(request, 'clearance_app/edit_department.html', context)
 
-
 @login_required
 def manage_officers(request):
-    """Manage department officers"""
     if not request.user.is_admin():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -593,10 +700,8 @@ def manage_officers(request):
     
     return render(request, 'clearance_app/manage_officers.html', context)
 
-
 @login_required
 def view_all_clearances(request):
-    """View and search all clearances"""
     if not request.user.is_admin():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -629,10 +734,8 @@ def view_all_clearances(request):
     
     return render(request, 'clearance_app/view_all_clearances.html', context)
 
-
 @login_required
 def view_clearance_detail(request, clearance_id):
-    """View detailed clearance information"""
     if not request.user.is_admin():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')
@@ -652,7 +755,7 @@ def view_clearance_detail(request, clearance_id):
 
 @login_required
 def audit_logs(request):
-    """View system audit logs"""
+
     if not request.user.is_admin():
         messages.error(request, 'Access denied.')
         return redirect('dashboard')

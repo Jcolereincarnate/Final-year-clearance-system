@@ -1,44 +1,263 @@
-<!-- clearance_certificate.html -->
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Clearance Certificate</title>
-    <style>
-        body { font-family: Arial; padding: 40px; }
-        .certificate { border: 3px solid #1e40af; padding: 30px; max-width: 800px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 30px; }
-        h1 { color: #1e40af; margin: 10px 0; }
-        .content { line-height: 2; }
-        .signature { margin-top: 50px; display: flex; justify-content: space-between; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clearance Certificate — {{ student.full_name }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/clearance_certificate.css' %}">
+{% endblock %}
 </head>
 <body>
-    <div class="certificate">
-        <div class="header">
-            <h1>AJAYI CROWTHER UNIVERSITY</h1>
-            <h2>CLEARANCE CERTIFICATE</h2>
-        </div>
-        <div class="content">
-            <p>This is to certify that:</p>
-            <p><strong>Name:</strong> {{ student.full_name }}</p>
-            <p><strong>Matric Number:</strong> {{ student.matric_number }}</p>
-            <p>Has successfully completed all clearance requirements and has been <strong>FULLY CLEARED</strong> by all departments.</p>
-            <p><strong>Clearance Completed:</strong> {{ clearance.date_completed|date:"F d, Y" }}</p>
-            <p><strong>Generated:</strong> {{ generated_date|date:"F d, Y H:i" }}</p>
-        </div>
-        <div class="signature">
-            <div>
-                <p>_______________________</p>
-                <p>Student Affairs</p>
-            </div>
-            <div>
-                <p>_______________________</p>
-                <p>Registrar</p>
-            </div>
+
+<!-- ==================== PRINT BAR ==================== -->
+<div class="print-bar">
+    <button class="print-btn" onclick="window.print()">Print Certificate</button>
+</div>
+
+<!-- ==================== CERTIFICATE PAGE ==================== -->
+<div class="page-wrapper">
+
+    <!-- Security layers -->
+    <div class="bg-guilloche"></div>
+    <div class="bg-radial"></div>
+
+    <!-- Diagonal watermark -->
+    <div class="diagonal-watermark">CLEARED</div>
+
+    <!-- Corner fans -->
+    <div class="bg-fan tl">
+        <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 160 Q40 80 160 0" stroke="#c9a84c" stroke-width="0.8" fill="none"/>
+            <path d="M0 140 Q35 75 140 0" stroke="#c9a84c" stroke-width="0.6" fill="none"/>
+            <path d="M0 120 Q30 65 120 0" stroke="#c9a84c" stroke-width="0.5" fill="none"/>
+            <path d="M0 100 Q25 55 100 0" stroke="#c9a84c" stroke-width="0.4" fill="none"/>
+            <path d="M0 80 Q20 45 80 0"  stroke="#c9a84c" stroke-width="0.4" fill="none"/>
+            <path d="M0 60 Q15 35 60 0"  stroke="#c9a84c" stroke-width="0.35" fill="none"/>
+            <path d="M0 40 Q10 22 40 0"  stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+            <path d="M0 20 Q5 12 20 0"   stroke="#c9a84c" stroke-width="0.25" fill="none"/>
+            <!-- inner circles -->
+            <circle cx="0" cy="0" r="12" stroke="#c9a84c" stroke-width="0.6" fill="rgba(201,168,76,0.15)"/>
+            <circle cx="0" cy="0" r="20" stroke="#c9a84c" stroke-width="0.4" fill="none"/>
+        </svg>
+    </div>
+    <div class="bg-fan tr"><svg viewBox="0 0 160 160" fill="none"><path d="M160 160 Q120 80 0 0" stroke="#c9a84c" stroke-width="0.8" fill="none"/><path d="M160 140 Q125 75 20 0" stroke="#c9a84c" stroke-width="0.6" fill="none"/><path d="M160 120 Q130 65 40 0" stroke="#c9a84c" stroke-width="0.5" fill="none"/><path d="M160 100 Q135 55 60 0" stroke="#c9a84c" stroke-width="0.4" fill="none"/><path d="M160 80 Q140 45 80 0" stroke="#c9a84c" stroke-width="0.4" fill="none"/><circle cx="160" cy="0" r="12" stroke="#c9a84c" stroke-width="0.6" fill="rgba(201,168,76,0.15)"/><circle cx="160" cy="0" r="20" stroke="#c9a84c" stroke-width="0.4" fill="none"/></svg></div>
+    <div class="bg-fan bl"><svg viewBox="0 0 160 160" fill="none"><path d="M0 0 Q40 80 160 160" stroke="#c9a84c" stroke-width="0.8" fill="none"/><path d="M0 20 Q35 90 140 160" stroke="#c9a84c" stroke-width="0.6" fill="none"/><path d="M0 40 Q30 100 120 160" stroke="#c9a84c" stroke-width="0.5" fill="none"/><circle cx="0" cy="160" r="12" stroke="#c9a84c" stroke-width="0.6" fill="rgba(201,168,76,0.15)"/><circle cx="0" cy="160" r="20" stroke="#c9a84c" stroke-width="0.4" fill="none"/></svg></div>
+    <div class="bg-fan br"><svg viewBox="0 0 160 160" fill="none"><path d="M160 0 Q120 80 0 160" stroke="#c9a84c" stroke-width="0.8" fill="none"/><path d="M160 20 Q125 90 20 160" stroke="#c9a84c" stroke-width="0.6" fill="none"/><path d="M160 40 Q130 100 40 160" stroke="#c9a84c" stroke-width="0.5" fill="none"/><circle cx="160" cy="160" r="12" stroke="#c9a84c" stroke-width="0.6" fill="rgba(201,168,76,0.15)"/><circle cx="160" cy="160" r="20" stroke="#c9a84c" stroke-width="0.4" fill="none"/></svg></div>
+
+    <!-- Microtext security band -->
+    <div class="microtext-ring">
+        <div class="microtext-top">AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · NOT VALID WITHOUT REGISTRAR SEAL · AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · NOT VALID WITHOUT REGISTRAR SEAL · AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · NOT VALID WITHOUT REGISTRAR SEAL ·</div>
+        <div class="microtext-bottom">AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · NOT VALID WITHOUT REGISTRAR SEAL · AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · NOT VALID WITHOUT REGISTRAR SEAL ·</div>
+        <div class="microtext-left">AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · THIS CERTIFICATE IS ISSUED UNDER THE SEAL OF AJAYI CROWTHER UNIVERSITY · FORGERY IS A CRIMINAL OFFENCE ·</div>
+        <div class="microtext-right">AJAYI CROWTHER UNIVERSITY · OFFICIAL CLEARANCE CERTIFICATE · AUTHENTICATED DOCUMENT · THIS CERTIFICATE IS ISSUED UNDER THE SEAL OF AJAYI CROWTHER UNIVERSITY · FORGERY IS A CRIMINAL OFFENCE ·</div>
+    </div>
+
+    <!-- Borders -->
+    <div class="border-outer"></div>
+    <div class="border-mid"></div>
+    <div class="border-inner"></div>
+
+    <!-- Corner gems -->
+    <div class="corner-gem tl"><svg viewBox="0 0 22 22" fill="none"><rect x="5" y="5" width="12" height="12" transform="rotate(45 11 11)" fill="#c9a84c" opacity="0.8"/><rect x="7" y="7" width="8" height="8" transform="rotate(45 11 11)" fill="none" stroke="#c9a84c" stroke-width="0.5"/><circle cx="11" cy="11" r="2" fill="#fdf8ee"/></svg></div>
+    <div class="corner-gem tr"><svg viewBox="0 0 22 22" fill="none"><rect x="5" y="5" width="12" height="12" transform="rotate(45 11 11)" fill="#c9a84c" opacity="0.8"/><rect x="7" y="7" width="8" height="8" transform="rotate(45 11 11)" fill="none" stroke="#c9a84c" stroke-width="0.5"/><circle cx="11" cy="11" r="2" fill="#fdf8ee"/></svg></div>
+    <div class="corner-gem bl"><svg viewBox="0 0 22 22" fill="none"><rect x="5" y="5" width="12" height="12" transform="rotate(45 11 11)" fill="#c9a84c" opacity="0.8"/><rect x="7" y="7" width="8" height="8" transform="rotate(45 11 11)" fill="none" stroke="#c9a84c" stroke-width="0.5"/><circle cx="11" cy="11" r="2" fill="#fdf8ee"/></svg></div>
+    <div class="corner-gem br"><svg viewBox="0 0 22 22" fill="none"><rect x="5" y="5" width="12" height="12" transform="rotate(45 11 11)" fill="#c9a84c" opacity="0.8"/><rect x="7" y="7" width="8" height="8" transform="rotate(45 11 11)" fill="none" stroke="#c9a84c" stroke-width="0.5"/><circle cx="11" cy="11" r="2" fill="#fdf8ee"/></svg></div>
+
+    <!-- Left ornamental band -->
+    <div class="side-band-left">
+        <div class="side-band-inner">
+            <div class="side-lozenge"></div>
+            <div class="side-line"></div>
+            <div class="side-text">Academic Year 2024–2025</div>
+            <div class="side-line"></div>
+            <div class="side-lozenge"></div>
         </div>
     </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <button onclick="window.print()" style="padding: 10px 20px; background: #1e40af; color: white; border: none; border-radius: 4px; cursor: pointer;">Print Certificate</button>
+
+    <!-- Right ornamental band -->
+    <div class="side-band-right">
+        <div class="side-band-inner">
+            <div class="side-lozenge"></div>
+            <div class="side-line"></div>
+            <div class="side-text">Ajayi Crowther University</div>
+            <div class="side-line"></div>
+            <div class="side-lozenge"></div>
+        </div>
     </div>
+
+    <!-- ================== MAIN CERTIFICATE BODY ================== -->
+    <div class="certificate-body">
+
+        <!-- Top header -->
+        <div class="cert-top">
+
+            <!-- Left seal -->
+            <div class="seal-left">
+                <div class="official-seal">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Outer ring -->
+                        <circle cx="50" cy="50" r="47" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,0.05)"/>
+                        <circle cx="50" cy="50" r="43" stroke="#c9a84c" stroke-width="0.5" fill="none"/>
+                        <!-- Star points -->
+                        <polygon points="50,8 52.4,42.6 65,15 55.6,44.4 78,22 57.8,46.8 88,38 60,50 88,62 57.8,53.2 78,78 55.6,55.6 65,85 52.4,57.4 50,92 47.6,57.4 35,85 44.4,55.6 22,78 42.2,53.2 12,62 40,50 12,38 42.2,46.8 22,22 44.4,44.4 35,15 47.6,42.6"
+                            fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.5"/>
+                        <!-- Inner circle -->
+                        <circle cx="50" cy="50" r="30" stroke="#c9a84c" stroke-width="1" fill="rgba(201,168,76,0.08)"/>
+                        <!-- ACU text -->
+                        <text x="50" y="46" text-anchor="middle" font-family="Cinzel, serif" font-size="9" font-weight="700" fill="#0a1628" letter-spacing="1">ACU</text>
+                        <text x="50" y="57" text-anchor="middle" font-family="Cinzel, serif" font-size="4.5" fill="#c9a84c" letter-spacing="1">EST. 2005</text>
+                        <!-- Ring text path -->
+                        <defs>
+                            <path id="seal-arc-top" d="M 10,50 A 40,40 0 0,1 90,50"/>
+                            <path id="seal-arc-bot" d="M 90,50 A 40,40 0 0,1 10,50"/>
+                        </defs>
+                        <text font-family="Cinzel, serif" font-size="4.8" fill="#0a1628" letter-spacing="1.5">
+                            <textPath href="#seal-arc-top" startOffset="5%">AJAYI CROWTHER UNIVERSITY</textPath>
+                        </text>
+                        <text font-family="Cinzel, serif" font-size="4.5" fill="#7b1c2e" letter-spacing="1.2">
+                            <textPath href="#seal-arc-bot" startOffset="8%">VERITAS · PROBITAS · EXCELLENTIA</textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Centre titles -->
+            <div class="cert-titles">
+                <div class="university-name">Ajayi Crowther University</div>
+                <div class="university-tagline">Veritas · Probitas · Excellentia &nbsp;|&nbsp; Oyo, Oyo State, Nigeria</div>
+                <div class="divider-gold"></div>
+                <div class="cert-doc-type">Office of the Registrar</div>
+                <div class="cert-main-title">Clearance Certificate</div>
+                <div class="divider-gold"></div>
+            </div>
+
+            <!-- Right seal (mirror) -->
+            <div class="seal-right">
+                <div class="official-seal">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="47" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,0.05)"/>
+                        <circle cx="50" cy="50" r="43" stroke="#c9a84c" stroke-width="0.5" fill="none"/>
+                        <polygon points="50,8 52.4,42.6 65,15 55.6,44.4 78,22 57.8,46.8 88,38 60,50 88,62 57.8,53.2 78,78 55.6,55.6 65,85 52.4,57.4 50,92 47.6,57.4 35,85 44.4,55.6 22,78 42.2,53.2 12,62 40,50 12,38 42.2,46.8 22,22 44.4,44.4 35,15 47.6,42.6" fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.5"/>
+                        <circle cx="50" cy="50" r="30" stroke="#c9a84c" stroke-width="1" fill="rgba(201,168,76,0.08)"/>
+                        <text x="50" y="46" text-anchor="middle" font-family="Cinzel, serif" font-size="8" font-weight="700" fill="#0a1628" letter-spacing="0.5">STUDENT</text>
+                        <text x="50" y="56" text-anchor="middle" font-family="Cinzel, serif" font-size="6.5" font-weight="700" fill="#0a1628" letter-spacing="0.5">AFFAIRS</text>
+                        <defs>
+                            <path id="seal2-arc-top" d="M 10,50 A 40,40 0 0,1 90,50"/>
+                            <path id="seal2-arc-bot" d="M 90,50 A 40,40 0 0,1 10,50"/>
+                        </defs>
+                        <text font-family="Cinzel, serif" font-size="4.8" fill="#0a1628" letter-spacing="1.5">
+                            <textPath href="#seal2-arc-top" startOffset="5%">OFFICIAL CLEARANCE SEAL</textPath>
+                        </text>
+                        <text font-family="Cinzel, serif" font-size="4.5" fill="#7b1c2e" letter-spacing="1.2">
+                            <textPath href="#seal2-arc-bot" startOffset="12%">AUTHENTICATED · CERTIFIED</textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ornament divider -->
+        <div class="ornament-divider">
+            <div class="line"></div>
+            <div class="motif">
+                <div class="diamond small"></div>
+                <div class="diamond"></div>
+                <div class="diamond small"></div>
+            </div>
+            <div class="line right"></div>
+        </div>
+
+        <!-- Preamble -->
+        <div class="cert-body-text">
+            <p class="cert-preamble">This is to certify, to all whom it may concern, that the student named hereunder</p>
+        </div>
+
+        <!-- Student name block -->
+        <div class="student-block">
+            <div class="student-name">{{ student.full_name }}</div>
+            <div class="student-matric">Matriculation No. &nbsp;{{ student.matric_number }}</div>
+        </div>
+
+        <!-- Clearance text -->
+        <div class="clearance-statement">
+            has duly completed all prescribed clearance requirements and has been <strong>FULLY CLEARED</strong>
+            by all departments of Ajayi Crowther University in accordance with institutional regulations.
+            This certificate is issued as evidence of satisfactory completion of all outstanding obligations.
+        </div>
+
+        <!-- Approvals row -->
+        <div class="approvals-row">
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">Library</div></div>
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">Bursary</div></div>
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">Faculty</div></div>
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">Student Affairs</div></div>
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">ICT Centre</div></div>
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">Hostel</div></div>
+            <div class="approval-stamp"><div class="stamp-circle"></div><div class="stamp-label">Exams & Records</div></div>
+        </div>
+
+        <!-- Ornament divider -->
+        <div class="ornament-divider">
+            <div class="line"></div>
+            <div class="motif">
+                <div class="diamond small"></div>
+                <div class="diamond"></div>
+                <div class="diamond small"></div>
+            </div>
+            <div class="line right"></div>
+        </div>
+
+        <!-- Dates row -->
+        <div class="dates-row">
+            <div class="date-item">
+                Clearance Completed
+                <span>{{ clearance.date_completed|date:"d F, Y" }}</span>
+            </div>
+            <div class="date-item">
+                Certificate Generated
+                <span>{{ generated_date|date:"d F, Y" }}</span>
+            </div>
+        </div>
+
+        <!-- Signature row -->
+        <div class="signature-row">
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                <div class="sig-name">Dean of Student Affairs</div>
+                <div class="sig-title">Ajayi Crowther University</div>
+            </div>
+
+            <div class="sig-block" style="flex: 0.5; align-items: center;">
+                <!-- Central embossed stamp impression -->
+                <svg viewBox="0 0 60 60" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.18;">
+                    <circle cx="30" cy="30" r="28" stroke="#0a1628" stroke-width="2" fill="none"/>
+                    <circle cx="30" cy="30" r="23" stroke="#0a1628" stroke-width="0.8" fill="none"/>
+                    <text x="30" y="27" text-anchor="middle" font-family="Cinzel,serif" font-size="5.5" font-weight="700" fill="#0a1628" letter-spacing="0.5">REGISTRAR</text>
+                    <text x="30" y="35" text-anchor="middle" font-family="Cinzel,serif" font-size="4.5" fill="#0a1628" letter-spacing="0.5">OFFICIAL</text>
+                    <text x="30" y="42" text-anchor="middle" font-family="Cinzel,serif" font-size="4" fill="#0a1628" letter-spacing="0.5">SEAL</text>
+                </svg>
+            </div>
+
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                <div class="sig-name">Registrar</div>
+                <div class="sig-title">Ajayi Crowther University</div>
+            </div>
+        </div>
+
+        <!-- Security footer -->
+        <div class="security-footer">
+            <div class="security-serial">Serial No: ACU/CLR/{{ clearance.date_completed|date:"Y" }}/{{ student.matric_number }}</div>
+            <div class="security-watermark-text">Verify at portal.acu.edu.ng/verify</div>
+            <div class="security-qr-placeholder" title="Verification QR Code"></div>
+        </div>
+
+    </div><!-- /certificate-body -->
+
+</div><!-- /page-wrapper -->
+
 </body>
 </html>

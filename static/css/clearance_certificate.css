@@ -1,0 +1,755 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@page {
+    size: A4 landscape;
+    margin: 0;
+}
+
+:root {
+    --navy: #0a1628;
+    --navy-mid: #122040;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f7edcf;
+    --gold-faint: #fdf8ee;
+    --cream: #fefcf5;
+    --crimson: #7b1c2e;
+    --crimson-light: #a02540;
+    --gray-seal: #4a5568;
+    --border-gold: #c9a84c;
+}
+
+html,
+body {
+    width: 297mm;
+    height: 210mm;
+    background: #2d2d2d;
+    font-family: 'EB Garamond', 'Times New Roman', serif;
+}
+
+
+/* ===================== OUTER WRAPPER ===================== */
+
+.page-wrapper {
+    width: 297mm;
+    height: 210mm;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ===================== LAYERED SECURITY BACKGROUND ===================== */
+
+
+/* Guilloche pattern — fine repeating geometric wave lines */
+
+.bg-guilloche {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient( 0deg, transparent, transparent 3px, rgba(201, 168, 76, 0.06) 3px, rgba(201, 168, 76, 0.06) 4px), repeating-linear-gradient( 90deg, transparent, transparent 3px, rgba(201, 168, 76, 0.06) 3px, rgba(201, 168, 76, 0.06) 4px);
+    z-index: 1;
+}
+
+
+/* Radial burst behind centre seal */
+
+.bg-radial {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(255, 252, 240, 0.0) 0%, rgba(201, 168, 76, 0.04) 60%, rgba(201, 168, 76, 0.10) 100%);
+    z-index: 2;
+}
+
+
+/* Corner decorative fans */
+
+.bg-fan {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    z-index: 3;
+    opacity: 0.12;
+}
+
+.bg-fan svg {
+    width: 100%;
+    height: 100%;
+}
+
+.bg-fan.tl {
+    top: 0;
+    left: 0;
+}
+
+.bg-fan.tr {
+    top: 0;
+    right: 0;
+    transform: scaleX(-1);
+}
+
+.bg-fan.bl {
+    bottom: 0;
+    left: 0;
+    transform: scaleY(-1);
+}
+
+.bg-fan.br {
+    bottom: 0;
+    right: 0;
+    transform: scale(-1);
+}
+
+
+/* Microtext security ring — tiny repeating text around the inner border */
+
+.microtext-ring {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.microtext-top,
+.microtext-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'EB Garamond', serif;
+    font-size: 5px;
+    letter-spacing: 1.5px;
+    color: rgba(201, 168, 76, 0.35);
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.microtext-top {
+    top: 2px;
+}
+
+.microtext-bottom {
+    bottom: 2px;
+    transform: rotate(180deg);
+}
+
+.microtext-left,
+.microtext-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    writing-mode: vertical-rl;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'EB Garamond', serif;
+    font-size: 5px;
+    letter-spacing: 1.5px;
+    color: rgba(201, 168, 76, 0.35);
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.microtext-left {
+    left: 2px;
+    text-orientation: mixed;
+}
+
+.microtext-right {
+    right: 2px;
+    transform: rotate(180deg);
+}
+
+
+/* ===================== OUTER BORDER SYSTEM ===================== */
+
+.border-outer {
+    position: absolute;
+    inset: 12px;
+    border: 3px solid var(--gold);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.border-mid {
+    position: absolute;
+    inset: 17px;
+    border: 0.75px solid var(--gold-light);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.border-inner {
+    position: absolute;
+    inset: 20px;
+    border: 0.5px solid rgba(201, 168, 76, 0.4);
+    z-index: 10;
+    pointer-events: none;
+}
+
+
+/* Gold corner ornaments on the outer border */
+
+.corner-gem {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    z-index: 11;
+}
+
+.corner-gem svg {
+    width: 100%;
+    height: 100%;
+}
+
+.corner-gem.tl {
+    top: 5px;
+    left: 5px;
+}
+
+.corner-gem.tr {
+    top: 5px;
+    right: 5px;
+}
+
+.corner-gem.bl {
+    bottom: 5px;
+    left: 5px;
+}
+
+.corner-gem.br {
+    bottom: 5px;
+    right: 5px;
+}
+
+
+/* ===================== SIDE ORNAMENTAL BANDS ===================== */
+
+.side-band-left,
+.side-band-right {
+    position: absolute;
+    top: 25px;
+    bottom: 25px;
+    width: 38px;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
+}
+
+.side-band-left {
+    left: 25px;
+}
+
+.side-band-right {
+    right: 25px;
+}
+
+.side-band-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    height: 100%;
+    justify-content: center;
+}
+
+.side-lozenge {
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.side-line {
+    width: 1.5px;
+    flex: 1;
+    background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+    opacity: 0.5;
+}
+
+.side-text {
+    writing-mode: vertical-rl;
+    font-family: 'Cinzel', serif;
+    font-size: 6.5px;
+    letter-spacing: 3px;
+    color: rgba(201, 168, 76, 0.5);
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin: 8px 0;
+}
+
+
+/* ===================== MAIN CONTENT ===================== */
+
+.certificate-body {
+    position: relative;
+    z-index: 20;
+    width: calc(297mm - 90px);
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+
+/* ---- Top header area ---- */
+
+.cert-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 6px;
+    width: 100%;
+}
+
+.seal-left,
+.seal-right {
+    flex-shrink: 0;
+}
+
+.cert-titles {
+    text-align: center;
+    flex: 1;
+}
+
+.university-name {
+    font-family: 'Cinzel', serif;
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.university-tagline {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 8.5px;
+    color: var(--gray-seal);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    opacity: 0.8;
+}
+
+.divider-gold {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+    margin: 4px 0;
+}
+
+.cert-doc-type {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin: 2px 0;
+}
+
+.cert-main-title {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 2px 0 3px;
+}
+
+
+/* ---- Ornamental divider ---- */
+
+.ornament-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 6px 0;
+}
+
+.ornament-divider .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+}
+
+.ornament-divider .line.right {
+    background: linear-gradient(to left, transparent, var(--gold));
+}
+
+.ornament-divider .motif {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--gold);
+    font-size: 10px;
+}
+
+.ornament-divider .diamond {
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+}
+
+.ornament-divider .diamond.small {
+    width: 4px;
+    height: 4px;
+    opacity: 0.6;
+}
+
+
+/* ---- Body text ---- */
+
+.cert-body-text {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.cert-preamble {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10.5px;
+    color: var(--gray-seal);
+    letter-spacing: 0.5px;
+}
+
+
+/* ---- Student block ---- */
+
+.student-block {
+    text-align: center;
+    position: relative;
+    padding: 8px 40px;
+    margin: 4px 0;
+    width: 100%;
+}
+
+.student-block::before,
+.student-block::after {
+    content: '';
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    height: 0.75px;
+    background: linear-gradient(to right, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+}
+
+.student-block::before {
+    top: 0;
+}
+
+.student-block::after {
+    bottom: 0;
+}
+
+.student-name {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 3px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.student-matric {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin-top: 2px;
+    font-weight: 600;
+}
+
+
+/* ---- Clearance statement ---- */
+
+.clearance-statement {
+    font-family: 'EB Garamond', serif;
+    font-size: 10.5px;
+    color: var(--navy-mid);
+    text-align: center;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 4px auto;
+}
+
+.clearance-statement strong {
+    font-weight: 600;
+    color: var(--navy);
+}
+
+
+/* ---- Approval stamps row ---- */
+
+.approvals-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    margin: 6px 0;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 560px;
+}
+
+.approval-stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.stamp-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    background: rgba(201, 168, 76, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.stamp-circle::before {
+    content: '✓';
+    font-family: serif;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: bold;
+}
+
+.stamp-label {
+    font-family: 'Cinzel', serif;
+    font-size: 5.5px;
+    letter-spacing: 0.5px;
+    color: var(--gray-seal);
+    text-align: center;
+    max-width: 44px;
+    line-height: 1.3;
+}
+
+
+/* ---- Dates row ---- */
+
+.dates-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 4px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 9px;
+    color: var(--gray-seal);
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.date-item span {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    color: var(--navy);
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-top: 1px;
+}
+
+
+/* ---- Signature row ---- */
+
+.signature-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 540px;
+    margin: 6px auto 0;
+    gap: 20px;
+}
+
+.sig-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+}
+
+.sig-line {
+    width: 110px;
+    height: 0.75px;
+    background: var(--navy);
+    margin-bottom: 3px;
+}
+
+.sig-name {
+    font-family: 'Cinzel', serif;
+    font-size: 7.5px;
+    letter-spacing: 1.5px;
+    color: var(--navy);
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+}
+
+.sig-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 8px;
+    color: var(--gray-seal);
+    text-align: center;
+}
+
+
+/* ---- Seal (SVG) ---- */
+
+.official-seal {
+    width: 70px;
+    height: 70px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.official-seal svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ---- Serial / Security ---- */
+
+.security-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 6px;
+    padding-top: 4px;
+    border-top: 0.5px solid rgba(201, 168, 76, 0.3);
+}
+
+.security-serial {
+    font-family: 'Cinzel', serif;
+    font-size: 6.5px;
+    letter-spacing: 2px;
+    color: rgba(10, 22, 40, 0.35);
+    text-transform: uppercase;
+}
+
+.security-qr-placeholder {
+    width: 28px;
+    height: 28px;
+    background: repeating-linear-gradient(0deg, rgba(10, 22, 40, 0.12) 0px, rgba(10, 22, 40, 0.12) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(10, 22, 40, 0.12) 0px, rgba(10, 168, 76, 0.12) 1px, transparent 1px, transparent 3px);
+    border: 1px solid rgba(10, 22, 40, 0.15);
+    font-size: 0;
+}
+
+.security-watermark-text {
+    font-family: 'Cinzel', serif;
+    font-size: 6px;
+    letter-spacing: 2px;
+    color: rgba(10, 22, 40, 0.25);
+    text-transform: uppercase;
+}
+
+
+/* ---- Large diagonal watermark ---- */
+
+.diagonal-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: 'Cinzel', serif;
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 16px;
+    color: rgba(201, 168, 76, 0.055);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 5;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+
+/* ===================== PRINT BUTTON (screen only) ===================== */
+
+.print-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 18px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+}
+
+.print-btn {
+    padding: 9px 24px;
+    background: linear-gradient(135deg, #c9a84c, #e8c97a);
+    color: #0a1628;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.print-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.4);
+}
+
+@media print {
+    html,
+    body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .print-bar {
+        display: none !important;
+    }
+    .page-wrapper {
+        box-shadow: none;
+    }
+}

@@ -1,4 +1,247 @@
-/* ==================== CLEARANCE UPLOAD PAGE ==================== */
+/* ==================== ROOT VARIABLES ==================== */
+
+:root {
+    /* ACU Brand Colors */
+    --primary-blue: #1e3a8a;
+    --primary-blue-dark: #1e293b;
+    --secondary-blue: #3b82f6;
+    --accent-gold: #f59e0b;
+    --accent-gold-light: #fbbf24;
+    /* Neutral Colors */
+    --white: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    /* Status Colors */
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --info: #3b82f6;
+    --info-light: #dbeafe;
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ==================== BASE RESET ==================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-50);
+}
+
+
+/* ==================== BUTTONS ==================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 0.75rem var(--spacing-lg);
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.btn-icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+    color: var(--white);
+}
+
+.btn-success {
+    background: var(--success);
+    color: var(--white);
+}
+
+.btn-success:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    color: var(--white);
+}
+
+.btn-secondary {
+    background: var(--gray-600);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background: var(--gray-700);
+    color: var(--white);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    color: var(--white);
+}
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-large {
+    padding: 1rem var(--spacing-xl);
+    font-size: 1.05rem;
+}
+
+
+/* ==================== CONTENT CARDS ==================== */
+
+.content-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    margin-bottom: var(--spacing-2xl);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.card-icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    color: var(--primary-blue);
+    flex-shrink: 0;
+}
+
+.card-body {
+    padding: var(--spacing-xl);
+}
+
+.card-body.no-padding {
+    padding: 0;
+}
+
+
+/* ==================== FORM STYLES ==================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem var(--spacing-md);
+    font-size: 1rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    background: var(--white);
+    color: var(--gray-800);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.form-help-text {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+}
+
+.form-error {
+    font-size: 0.85rem;
+    color: var(--danger);
+}
+
+
+/* ==================== PAGE LAYOUT ==================== */
 
 .clearance-upload-container {
     max-width: 1200px;
@@ -14,6 +257,23 @@
     align-items: flex-start;
     margin-bottom: var(--spacing-2xl);
     gap: var(--spacing-lg);
+}
+
+.page-header-content {
+    flex: 1;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.page-subtitle {
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin: 0;
 }
 
 .rejected-title,
@@ -35,10 +295,11 @@
     width: 32px;
     height: 32px;
     stroke-width: 2;
+    flex-shrink: 0;
 }
 
 
-/* Alert Banner */
+/* ==================== ALERT BANNER ==================== */
 
 .alert-banner {
     display: flex;
@@ -54,8 +315,19 @@
     border-left-color: var(--warning);
 }
 
+.alert-danger {
+    background: var(--danger-light);
+    border-left-color: var(--danger);
+}
+
+.alert-success {
+    background: var(--success-light);
+    border-left-color: var(--success);
+}
+
 .alert-icon-wrapper {
     flex-shrink: 0;
+    padding-top: 2px;
 }
 
 .alert-icon {
@@ -63,6 +335,18 @@
     height: 24px;
     stroke-width: 2;
     color: var(--warning);
+}
+
+.alert-danger .alert-icon {
+    color: var(--danger);
+}
+
+.alert-success .alert-icon {
+    color: var(--success);
+}
+
+.alert-content {
+    flex: 1;
 }
 
 .alert-content strong {
@@ -73,14 +357,31 @@
     margin-bottom: var(--spacing-sm);
 }
 
+.alert-danger .alert-content strong {
+    color: #991b1b;
+}
+
+.alert-success .alert-content strong {
+    color: #065f46;
+}
+
 .alert-content p {
     font-size: 0.95rem;
     color: #92400e;
     margin: 0;
+    line-height: 1.6;
+}
+
+.alert-danger .alert-content p {
+    color: #991b1b;
+}
+
+.alert-success .alert-content p {
+    color: #065f46;
 }
 
 
-/* Instructions Card */
+/* ==================== INSTRUCTIONS CARD ==================== */
 
 .instructions-card .card-body {
     padding: 0;
@@ -138,8 +439,16 @@
     color: var(--warning);
 }
 
+.list-icon.danger {
+    color: var(--danger);
+}
 
-/* Upload Form */
+.list-icon.info {
+    color: var(--info);
+}
+
+
+/* ==================== UPLOAD FORM ==================== */
 
 .upload-form {
     display: flex;
@@ -151,6 +460,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: var(--spacing-xl);
+    align-items: start;
 }
 
 .file-upload-wrapper {
@@ -163,6 +473,8 @@
     opacity: 0;
     cursor: pointer;
     z-index: 2;
+    width: 100%;
+    height: 100%;
 }
 
 .file-upload-placeholder {
@@ -175,9 +487,12 @@
     border: 2px dashed var(--gray-300);
     border-radius: var(--radius-md);
     transition: all 0.2s ease;
+    text-align: center;
+    min-height: 140px;
 }
 
-.file-upload-wrapper:hover .file-upload-placeholder {
+.file-upload-wrapper:hover .file-upload-placeholder,
+.file-upload-wrapper:focus-within .file-upload-placeholder {
     border-color: var(--primary-blue);
     background: var(--info-light);
 }
@@ -188,6 +503,11 @@
     stroke-width: 1.5;
     color: var(--gray-400);
     margin-bottom: var(--spacing-md);
+}
+
+.file-upload-wrapper:hover .upload-icon,
+.file-upload-wrapper:focus-within .upload-icon {
+    color: var(--primary-blue);
 }
 
 .upload-text {
@@ -203,17 +523,8 @@
     margin: 0;
 }
 
-.btn-full {
-    width: 100%;
-}
 
-.btn-large {
-    padding: 1rem var(--spacing-xl);
-    font-size: 1.05rem;
-}
-
-
-/* Documents List */
+/* ==================== DOCUMENTS LIST ==================== */
 
 .success-message {
     display: flex;
@@ -223,6 +534,7 @@
     background: var(--success-light);
     border-radius: var(--radius-md);
     margin-bottom: var(--spacing-xl);
+    border-left: 3px solid var(--success);
 }
 
 .success-icon {
@@ -269,6 +581,7 @@
     align-items: center;
     justify-content: center;
     background: var(--white);
+    border: 1px solid var(--gray-200);
     border-radius: var(--radius-md);
     flex-shrink: 0;
 }
@@ -282,6 +595,7 @@
 
 .document-details {
     flex: 1;
+    min-width: 0;
 }
 
 .document-title {
@@ -295,24 +609,29 @@
     font-size: 0.95rem;
     color: var(--gray-700);
     margin: 0 0 var(--spacing-xs) 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .document-metadata {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    flex-wrap: wrap;
     font-size: 0.875rem;
     color: var(--gray-500);
     margin: 0;
 }
 
 .separator {
-    color: var(--gray-400);
+    color: var(--gray-300);
 }
 
 .document-actions {
     display: flex;
     gap: var(--spacing-sm);
+    flex-shrink: 0;
 }
 
 .action-btn {
@@ -329,12 +648,14 @@
     font-weight: 500;
     transition: all 0.2s ease;
     cursor: pointer;
+    line-height: 1;
 }
 
 .action-btn svg {
     width: 16px;
     height: 16px;
     stroke-width: 2;
+    flex-shrink: 0;
 }
 
 .view-btn:hover {
@@ -350,7 +671,37 @@
 }
 
 
-/* Submit Section */
+/* ==================== EMPTY STATE ==================== */
+
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    color: var(--gray-300);
+    stroke-width: 1.5;
+    margin: 0 auto var(--spacing-md);
+    display: block;
+}
+
+.empty-state h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.empty-state p {
+    font-size: 0.95rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+
+/* ==================== SUBMIT SECTION ==================== */
 
 .submit-section {
     padding: var(--spacing-2xl);
@@ -363,6 +714,7 @@
     display: flex;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
+    align-items: flex-start;
 }
 
 .submit-icon {
@@ -371,6 +723,7 @@
     stroke-width: 2;
     color: var(--success);
     flex-shrink: 0;
+    margin-top: 2px;
 }
 
 .submit-title {
@@ -384,10 +737,11 @@
     font-size: 0.95rem;
     color: #047857;
     margin: 0;
+    line-height: 1.6;
 }
 
 
-/* Document Count Badge */
+/* ==================== DOCUMENT COUNT BADGE ==================== */
 
 .document-count {
     display: inline-flex;
@@ -402,6 +756,7 @@
     font-weight: 700;
     border-radius: var(--radius-md);
     margin-left: var(--spacing-sm);
+    transition: all 0.2s ease;
 }
 
 .document-count.has-documents {
@@ -410,7 +765,7 @@
 }
 
 
-/* Responsive */
+/* ==================== RESPONSIVE ==================== */
 
 @media (max-width: 1024px) {
     .instructions-content {
@@ -429,8 +784,23 @@
     .page-header {
         flex-direction: column;
     }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
     .document-item {
         flex-wrap: wrap;
+    }
+    .document-icon-large {
+        width: 44px;
+        height: 44px;
+    }
+    .document-icon-large svg {
+        width: 24px;
+        height: 24px;
     }
     .document-actions {
         width: 100%;
@@ -439,5 +809,12 @@
     .action-btn {
         flex: 1;
         justify-content: center;
+    }
+    .submit-section {
+        padding: var(--spacing-lg);
+    }
+    .alert-banner {
+        flex-direction: column;
+        gap: var(--spacing-md);
     }
 }

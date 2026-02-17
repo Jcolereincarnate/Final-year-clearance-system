@@ -1,7 +1,70 @@
-/* ==================== OFFICER PAGES STYLES ==================== */
+/* ==================== ROOT VARIABLES ==================== */
+
+:root {
+    /* ACU Brand Colors */
+    --primary-blue: #1e3a8a;
+    --primary-blue-dark: #1e293b;
+    --secondary-blue: #3b82f6;
+    --accent-gold: #f59e0b;
+    --accent-gold-light: #fbbf24;
+    /* Neutral Colors */
+    --white: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    /* Status Colors */
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --info: #3b82f6;
+    --info-light: #dbeafe;
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
 
 
-/* Officer Dashboard Container */
+/* ==================== BASE RESET ==================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-50);
+}
+
+
+/* ==================== PAGE LAYOUT ==================== */
 
 .officer-dashboard-container,
 .review-clearance-container,
@@ -9,6 +72,622 @@
     max-width: 1400px;
     margin: 0 auto;
 }
+
+
+/* Page Header */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-2xl);
+    gap: var(--spacing-lg);
+}
+
+.page-header-content {
+    flex: 1;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 var(--spacing-xs) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.title-icon {
+    width: 32px;
+    height: 32px;
+    stroke-width: 2;
+    color: var(--primary-blue);
+    flex-shrink: 0;
+}
+
+.page-subtitle {
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+
+/* ==================== BUTTONS ==================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 0.75rem var(--spacing-lg);
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.btn-icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+    color: var(--white);
+}
+
+.btn-success {
+    background: var(--success);
+    color: var(--white);
+}
+
+.btn-success:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    color: var(--white);
+}
+
+.btn-secondary {
+    background: var(--gray-600);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background: var(--gray-700);
+    color: var(--white);
+}
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-large {
+    padding: 1rem var(--spacing-xl);
+    font-size: 1.05rem;
+}
+
+
+/* ==================== STATS GRID ==================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    border-radius: var(--radius-lg);
+    flex-shrink: 0;
+}
+
+.stat-icon-wrapper.success {
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+}
+
+.stat-icon-wrapper.warning {
+    background: linear-gradient(135deg, var(--warning) 0%, var(--accent-gold-light) 100%);
+}
+
+.stat-icon-wrapper.danger {
+    background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+}
+
+.stat-icon {
+    width: 32px;
+    height: 32px;
+    stroke-width: 2;
+    color: var(--white);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1;
+}
+
+
+/* ==================== CONTENT CARDS ==================== */
+
+.content-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    margin-bottom: var(--spacing-2xl);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.card-icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    color: var(--primary-blue);
+    flex-shrink: 0;
+}
+
+.card-body {
+    padding: var(--spacing-xl);
+}
+
+.card-body.no-padding {
+    padding: 0;
+}
+
+.card-header-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.info-badge {
+    padding: 0.375rem 0.875rem;
+    background: var(--info-light);
+    color: var(--primary-blue);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+}
+
+.card-header-action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.card-header-action svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+.card-header-action:hover {
+    background: var(--info-light);
+}
+
+
+/* ==================== DATA TABLE ==================== */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead th {
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-align: left;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--gray-50);
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.data-table tbody td {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--gray-200);
+    font-size: 0.95rem;
+    color: var(--gray-700);
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background: var(--gray-50);
+}
+
+
+/* Current Department Row Highlight */
+
+.data-table tbody tr.current-dept {
+    background: var(--info-light);
+}
+
+
+/* ==================== DEPT CELL ==================== */
+
+.dept-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.dept-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.dept-name {
+    font-weight: 500;
+    color: var(--gray-900);
+}
+
+.current-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    margin-left: var(--spacing-sm);
+}
+
+
+/* ==================== TABLE BADGES ==================== */
+
+.table-badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+}
+
+.badge-success {
+    background: var(--success-light);
+    color: #065f46;
+}
+
+.badge-danger {
+    background: var(--danger-light);
+    color: #991b1b;
+}
+
+.badge-warning {
+    background: var(--warning-light);
+    color: #92400e;
+}
+
+.badge-info {
+    background: var(--info-light);
+    color: #1e40af;
+}
+
+
+/* ==================== STUDENT CELLS ==================== */
+
+.student-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.student-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--accent-gold);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.875rem;
+    border-radius: 50%;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.student-name-small {
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.125rem;
+}
+
+
+/* Matric Code */
+
+.matric-code {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+}
+
+.matric-code.small {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+}
+
+.matric-code.large {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+
+/* ==================== COMMENT & MISC ==================== */
+
+.comment-text {
+    display: block;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--gray-700);
+}
+
+.text-muted {
+    color: var(--gray-400);
+}
+
+.separator {
+    color: var(--gray-400);
+}
+
+
+/* Timestamp Cell */
+
+.timestamp-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--gray-600);
+}
+
+.time-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    color: var(--gray-400);
+    flex-shrink: 0;
+}
+
+
+/* ==================== EMPTY STATE ==================== */
+
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+}
+
+.empty-state-table {
+    text-align: center;
+    padding: var(--spacing-2xl);
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    color: var(--gray-400);
+    stroke-width: 1.5;
+    margin: 0 auto var(--spacing-md);
+    display: block;
+}
+
+.empty-state h3,
+.empty-state-table h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.empty-state p,
+.empty-state-table p {
+    font-size: 0.95rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+
+/* ==================== INFO ITEMS (Review Page) ==================== */
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.info-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1.05rem;
+    color: var(--gray-900);
+    font-weight: 500;
+}
+
+
+/* ==================== FORM STYLES ==================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem var(--spacing-md);
+    font-size: 1rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    background: var(--white);
+    color: var(--gray-800);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-help-text {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.form-error {
+    font-size: 0.85rem;
+    color: var(--danger);
+    margin-top: var(--spacing-xs);
+}
+
+.form-error-box {
+    padding: var(--spacing-md);
+    background: var(--danger-light);
+    color: var(--danger);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+
+/* ==================== OFFICER DASHBOARD ==================== */
 
 
 /* Department Icon in Header */
@@ -110,10 +789,7 @@
     margin: 0;
     font-size: 0.95rem;
     color: var(--gray-600);
-}
-
-.separator {
-    color: var(--gray-400);
+    flex-wrap: wrap;
 }
 
 .faculty-text {
@@ -140,20 +816,7 @@
     height: 16px;
     stroke-width: 2;
     color: var(--gray-400);
-}
-
-
-/* Student Name in Tables */
-
-.student-name-small {
-    font-weight: 600;
-    color: var(--gray-900);
-    margin-bottom: 0.125rem;
-}
-
-.matric-code.small {
-    font-size: 0.75rem;
-    padding: 0.125rem 0.375rem;
+    flex-shrink: 0;
 }
 
 
@@ -213,6 +876,13 @@
 }
 
 
+/* Student Info Card */
+
+.student-info-card {
+    border-top: 4px solid var(--primary-blue);
+}
+
+
 /* Documents Review Grid */
 
 .documents-review-grid {
@@ -246,6 +916,7 @@
     background: var(--white);
     border-radius: var(--radius-lg);
     margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--gray-200);
 }
 
 .document-icon-large svg {
@@ -275,6 +946,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 100%;
 }
 
 .document-metadata {
@@ -283,30 +955,8 @@
     margin: 0;
 }
 
-.btn-full {
-    width: 100%;
-}
 
-
-/* Current Department Highlight */
-
-.data-table tbody tr.current-dept {
-    background: var(--info-light);
-}
-
-.current-badge {
-    display: inline-block;
-    padding: 0.125rem 0.5rem;
-    background: var(--primary-blue);
-    color: var(--white);
-    font-size: 0.75rem;
-    font-weight: 700;
-    border-radius: var(--radius-sm);
-    margin-left: var(--spacing-sm);
-}
-
-
-/* Decision Form */
+/* Decision Card & Form */
 
 .decision-card {
     border: 2px solid var(--primary-blue);
@@ -345,6 +995,7 @@
     border: 2px solid var(--gray-300);
     border-radius: var(--radius-lg);
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .decision-option input[type="radio"]:checked+.option-content {
@@ -407,11 +1058,6 @@
     margin-right: var(--spacing-xs);
 }
 
-.btn-large {
-    padding: 1rem var(--spacing-xl);
-    font-size: 1.05rem;
-}
-
 
 /* ==================== OFFICER HISTORY PAGE ==================== */
 
@@ -434,6 +1080,7 @@
     font-weight: 700;
     font-size: 0.75rem;
     border-radius: var(--radius-sm);
+    flex-shrink: 0;
 }
 
 
@@ -460,12 +1107,29 @@
 }
 
 @media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+    }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .stat-value {
+        font-size: 1.875rem;
+    }
     .clearance-queue-item {
         padding: var(--spacing-lg);
     }
     .student-info {
         flex-direction: column;
         align-items: flex-start;
+    }
+    .student-avatar-large {
+        width: 44px;
+        height: 44px;
+        font-size: 1.125rem;
     }
     .student-meta {
         flex-wrap: wrap;
@@ -474,6 +1138,28 @@
         grid-template-columns: 1fr;
     }
     .documents-review-grid {
+        grid-template-columns: 1fr;
+    }
+    .data-table {
+        font-size: 0.875rem;
+    }
+    .data-table thead th,
+    .data-table tbody td {
+        padding: var(--spacing-sm);
+    }
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .decision-options {
         grid-template-columns: 1fr;
     }
 }

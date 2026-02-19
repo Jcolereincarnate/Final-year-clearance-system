@@ -168,8 +168,7 @@ class Clearance(models.Model):
     
     student = models.OneToOneField(User, on_delete=models.CASCADE, related_name='clearance')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_started')
-    current_department = models.ForeignKey(Department, on_delete=models.SET_NULL, 
-                                          null=True, blank=True, related_name='current_clearances')
+    current_department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, related_name='current_clearances')
     
     # Timestamps
     date_created = models.DateTimeField(auto_now_add=True)
